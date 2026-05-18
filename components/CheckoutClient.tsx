@@ -31,7 +31,7 @@ function buildLines(items: CartItem[]): CartLine[] {
         lineTotal: product.price * item.quantity
       };
     })
-    .filter((line): line is CartLine => Boolean(line));
+    .filter((line): line is CartLine => line !== null);
 }
 
 export default function CheckoutClient() {
