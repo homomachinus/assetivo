@@ -24,13 +24,17 @@ export default function ProductDetailPage({
     notFound();
   }
 
-  const related = getRelatedProducts(product.category, product.id, 4);
+  const related = getRelatedProducts(
+    product.line,
+    product.category,
+    product.id,
+    4
+  );
 
   return (
     <AppShell>
       <Topbar
-        title="Product details"
-        subtitle="Backed by our quality guarantee"
+        title=""
         actions={
           <div className="action-row">
             <Link href="/cart" className="icon-btn" aria-label="Cart">
@@ -46,9 +50,7 @@ export default function ProductDetailPage({
                 <circle cx="18" cy="20" r="1.5" fill="currentColor" />
               </svg>
             </Link>
-            <Link href="/account" className="avatar" aria-label="Account">
-              EA
-            </Link>
+
           </div>
         }
       />
@@ -79,6 +81,10 @@ export default function ProductDetailPage({
 
           <div className="product-detail">
             <h1 className="product-title">{product.name}</h1>
+            <p className="product-hierarchy">
+              {product.line} <span>›</span> {product.category} <span>›</span>{" "}
+              {product.variantType} / {product.variantColor}
+            </p>
             <p className="product-description">{product.description}</p>
             <div className="price-row">
               <span className="price-now">{formatPrice(product.price)}</span>

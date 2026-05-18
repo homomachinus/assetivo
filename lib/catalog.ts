@@ -12,12 +12,18 @@ export function getProductById(id: string): Product | undefined {
 }
 
 export function getRelatedProducts(
+  line: string,
   category: string,
   currentId: string,
   count: number
 ): Product[] {
   return products
-    .filter((product) => product.category === category && product.id !== currentId)
+    .filter(
+      (product) =>
+        product.line === line &&
+        product.category === category &&
+        product.id !== currentId
+    )
     .slice(0, count);
 }
 

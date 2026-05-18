@@ -1,9 +1,12 @@
 export type Product = {
   id: string;
+  line: string;
   name: string;
   price: number;
   was: number;
   category: string;
+  variantType: string;
+  variantColor: string;
   image: string;
   description: string;
   details: string[];
@@ -15,10 +18,13 @@ export type Product = {
 export const products: Product[] = [
   {
     id: "shirt-oxford",
+    line: "Apparel",
     name: "Oxford Shirt",
     price: 390,
     was: 490,
-    category: "shirts",
+    category: "Shirts",
+    variantType: "Oxford",
+    variantColor: "Sand",
     image:
       "/assets/cover/image3.png",
     description:
@@ -34,14 +40,17 @@ export const products: Product[] = [
       { name: "Rose", hex: "#e7b3a8" }
     ],
     sizes: ["S", "M", "L", "XL"],
-    favourite: true
+    favourite: false
   },
   {
     id: "bag-weekender",
+    line: "Accessories",
     name: "Weekender Bag",
     price: 299,
     was: 480,
-    category: "bags",
+    category: "Bags",
+    variantType: "Weekender",
+    variantColor: "Black",
     image:
       "/assets/cover/image1.png",
     description:
@@ -56,14 +65,17 @@ export const products: Product[] = [
       { name: "Clay", hex: "#b08968" }
     ],
     sizes: ["One size"],
-    favourite: true
+    favourite: false
   },
   {
     id: "jacket-utility",
+    line: "Apparel",
     name: "Utility Jacket",
     price: 450,
     was: 690,
-    category: "jackets",
+    category: "Jackets",
+    variantType: "Utility",
+    variantColor: "Olive",
     image:
       "/assets/cover/image4.png",
     description:
@@ -82,10 +94,13 @@ export const products: Product[] = [
   },
   {
     id: "blazer-slim",
+    line: "Apparel",
     name: "Slim Fit Blazer",
     price: 390,
     was: 490,
-    category: "jackets",
+    category: "Jackets",
+    variantType: "Slim Fit",
+    variantColor: "Camel",
     image:
       "/assets/cover/image1.png",
     description:
@@ -100,14 +115,17 @@ export const products: Product[] = [
       { name: "Midnight", hex: "#1f2937" }
     ],
     sizes: ["M", "L", "XL"],
-    favourite: true
+    favourite: false
   },
   {
     id: "watch-atelier",
+    line: "Accessories",
     name: "Atelier Watch",
     price: 490,
     was: 690,
-    category: "watches",
+    category: "Watches",
+    variantType: "Atelier",
+    variantColor: "Tan",
     image:
       "/assets/cover/image1.png",
     description:
@@ -122,14 +140,17 @@ export const products: Product[] = [
       { name: "Black", hex: "#111827" }
     ],
     sizes: ["One size"],
-    favourite: true
+    favourite: false
   },
   {
     id: "tee-heritage",
+    line: "Apparel",
     name: "Heritage Tee",
     price: 250,
     was: 490,
-    category: "shirts",
+    category: "Shirts",
+    variantType: "Heritage",
+    variantColor: "Bone",
     image:
       "/assets/cover/image1.png",
     description:
@@ -144,10 +165,13 @@ export const products: Product[] = [
   },
   {
     id: "jacket-denim",
+    line: "Apparel",
     name: "Denim Jacket",
     price: 520,
     was: 750,
-    category: "jackets",
+    category: "Jackets",
+    variantType: "Denim",
+    variantColor: "Indigo",
     image:
       "/assets/cover/image1.png",
     description:
@@ -162,10 +186,13 @@ export const products: Product[] = [
   },
   {
     id: "sneaker-canvas",
+    line: "Accessories",
     name: "Canvas Sneakers",
     price: 180,
     was: 250,
-    category: "shoes",
+    category: "Shoes",
+    variantType: "Canvas",
+    variantColor: "White",
     image:
       "/assets/cover/image1.png",
     description:
@@ -176,6 +203,6 @@ export const products: Product[] = [
       { name: "Navy", hex: "#1e293b" }
     ],
     sizes: ["39", "40", "41", "42", "43"],
-    favourite: true
+    favourite: false
   }
 ];

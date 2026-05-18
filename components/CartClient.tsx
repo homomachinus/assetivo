@@ -6,7 +6,7 @@ import Link from "next/link";
 import { products, type Product } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { getCartTotals } from "@/lib/catalog";
-import { readCartCookie, type CartItem } from "@/lib/cart-cookie";
+import { readCartCookie, writeCartCookie, type CartItem } from "@/lib/cart-cookie";
 
 type CartLine = {
   item: CartItem & { size: string; color: string };
@@ -30,7 +30,6 @@ function buildLines(items: CartItem[]): CartLine[] {
   return lines;
 }
 
-
 export default function CartClient() {
   const [items, setItems] = useState<CartItem[]>([]);
 
@@ -40,6 +39,12 @@ export default function CartClient() {
 
   const lines = useMemo(() => buildLines(items), [items]);
   const totals = useMemo(() => getCartTotals(lines), [lines]);
+
+  function removeItem(productId: string) {
+    const updated = items.filter((i) => i.productId !== productId);
+    setItems(updated);
+    writeCartCookie(updated);
+  }
 
   return (
     <section className="section fade-up">
@@ -64,12 +69,29 @@ export default function CartClient() {
                 />
                 <div className="cart-meta">
                   <strong>{line.product.name}</strong>
-                  <span>
-                    Size: {line.item.size} - Color: {line.item.color}
+                  <span className="cart-hierarchy">
+                    {line.product.line} / {line.product.category} / {line.product.variantType}
+                    {" "}· {line.product.variantColor}
                   </span>
                   <strong>{formatPrice(line.lineTotal)}</strong>
                 </div>
-                <div className="qty-chip">Qty {line.item.quantity}</div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px" }}>
+                  <div className="qty-chip">Qty {line.item.quantity}</div>
+                  <button
+                    onClick={() => removeItem(line.product.id)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      color: "#d14f4f",
+                      fontWeight: 600,
+                      padding: 0,
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>

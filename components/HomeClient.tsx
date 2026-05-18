@@ -24,10 +24,40 @@ export default function HomeClient({ products }: HomeClientProps) {
     }
 
     return products.filter((product) => {
-      const haystack = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+      const haystack = `${product.line} ${product.category} ${product.variantType} ${product.variantColor} ${product.name} ${product.description}`.toLowerCase();
       return haystack.includes(normalizedQuery);
     });
   }, [products, normalizedQuery]);
+
+  const lines = useMemo(() => {
+    const unique = new Set(products.map((product) => product.line));
+    return Array.from(unique);
+  }, [products]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, Map<string, Product[]>>();
+    filteredProducts.forEach((product) => {
+      if (!map.has(product.line)) {
+        map.set(product.line, new Map());
+      }
+      const categoryMap = map.get(product.line);
+      if (!categoryMap) {
+        return;
+      }
+      if (!categoryMap.has(product.category)) {
+        categoryMap.set(product.category, []);
+      }
+      categoryMap.get(product.category)?.push(product);
+    });
+
+    return Array.from(map.entries()).map(([line, categories]) => ({
+      line,
+      categories: Array.from(categories.entries()).map(([category, items]) => ({
+        category,
+        items
+      }))
+    }));
+  }, [filteredProducts]);
 
   const heroProducts = products.slice(0, 2);
   const heroProduct = heroProducts[0];
@@ -100,29 +130,49 @@ export default function HomeClient({ products }: HomeClientProps) {
 
       <section className="section fade-up">
         <div className="section-head">
-          <h2 className="section-title">Categories</h2>
+          <h2 className="section-title">Product lines</h2>
           <Link className="section-link" href="/favourites">
             View favourites
           </Link>
         </div>
-        <CategoryRow />
+        <CategoryRow items={lines} />
       </section>
 
       <section className="section fade-up" id="arrivals">
         <div className="section-head">
-          <h2 className="section-title">New arrivals</h2>
+          <h2 className="section-title">Product hierarchy</h2>
           <Link className="section-link" href="/cart">
             Go to cart
           </Link>
         </div>
-        {filteredProducts.length ? (
-          <div className="product-grid">
-            {filteredProducts.map((product, index) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                priority={index < 2}
-              />
+        {grouped.length ? (
+          <div className="line-stack">
+            {grouped.map((group) => (
+              <div key={group.line} className="line-block">
+                <div className="line-head">
+                  <h3 className="line-title">{group.line}</h3>
+                  <span className="line-meta">Product line</span>
+                </div>
+                {group.categories.map((categoryGroup) => (
+                  <div key={categoryGroup.category} className="category-block">
+                    <div className="category-head">
+                      <h4 className="category-title">{categoryGroup.category}</h4>
+                      <span className="category-meta">
+                        {categoryGroup.items.length} type
+                      </span>
+                    </div>
+                    <div className="product-grid">
+                      {categoryGroup.items.map((product, index) => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          priority={index < 2}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             ))}
           </div>
         ) : (

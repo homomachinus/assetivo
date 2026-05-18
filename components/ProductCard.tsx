@@ -23,22 +23,12 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           sizes="(max-width: 768px) 100vw, 280px"
           style={{ objectFit: "contain", height: "180px", width: "100%" }}
         />
-        <span
-          className={`like-btn${product.favourite ? " active" : ""}`}
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M12 20.5s-7-4.4-9.2-8.5C1.3 9.2 2.6 6 5.7 5.2c2.1-.6 4.3.2 5.7 1.8 1.4-1.6 3.6-2.4 5.7-1.8 3.1.8 4.4 4 2.9 6.8C19 16.1 12 20.5 12 20.5z"
-              fill={product.favourite ? "currentColor" : "none"}
-              stroke="currentColor"
-              strokeWidth="1.6"
-            />
-          </svg>
-        </span>
       </div>
       <div className="product-info">
         <h3>{product.name}</h3>
+        <p className="product-meta">
+          {product.line} · {product.category} · {product.variantType} / {product.variantColor}
+        </p>
         <div className="price-row">
           <span className="price-now">{formatPrice(product.price)}</span>
           <span className="price-was">{formatPrice(product.was)}</span>

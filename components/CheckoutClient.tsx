@@ -11,6 +11,7 @@ type CartLine = {
   item: CartItem & { size: string; color: string };
   product: Product;
   lineTotal: number;
+  hierarchy?: string[]; // Include hierarchy fields if needed later
 };
 function buildLines(items: CartItem[]): CartLine[] {
   const lines: CartLine[] = [];
@@ -142,9 +143,15 @@ export default function CheckoutClient() {
             <>
               {lines.map((line) => (
                 <div key={line.product.id} className="summary-row">
-                  <span>
-                    {line.product.name} x{line.item.quantity}
-                  </span>
+                  <div className="summary-item">
+                    <span className="summary-name">
+                      {line.product.name} x{line.item.quantity}
+                    </span>
+                    <span className="summary-meta">
+                      {line.product.line} / {line.product.category} / {line.product.variantType}
+                      {" "}· {line.product.variantColor}
+                    </span>
+                  </div>
                   <span>{formatPrice(line.lineTotal)}</span>
                 </div>
               ))}

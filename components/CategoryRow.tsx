@@ -1,30 +1,31 @@
 "use client";
 
-const categories = [
-  { label: "Shirts", abbr: "SR" },
-  { label: "Pants", abbr: "PN" },
-  { label: "Caps", abbr: "CP" },
-  { label: "Bags", abbr: "BG" },
-  { label: "Shoes", abbr: "SN" },
-  { label: "Watches", abbr: "WT" },
-  { label: "Jackets", abbr: "JK" },
-  { label: "Accessories", abbr: "AC" }
-];
+type CategoryRowProps = {
+  items: string[];
+};
 
-export default function CategoryRow() {
+function getAbbr(label: string) {
+  const parts = label.split(" ").filter(Boolean);
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+}
+
+export default function CategoryRow({ items }: CategoryRowProps) {
   return (
     <div className="category-row">
-      {categories.map((category, index) => (
+      {items.map((label, index) => (
         <button
-          key={category.label}
+          key={label}
           type="button"
           className={`category-pill${index === 0 ? " active" : ""}`}
           aria-pressed={index === 0}
         >
           <span className="category-icon">
-            <span className="category-letter">{category.abbr}</span>
+            <span className="category-letter">{getAbbr(label)}</span>
           </span>
-          <span className="category-name">{category.label}</span>
+          <span className="category-name">{label}</span>
         </button>
       ))}
     </div>

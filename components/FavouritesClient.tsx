@@ -26,7 +26,7 @@ export default function FavouritesClient({ products }: FavouritesClientProps) {
     }
 
     return favourites.filter((product) => {
-      const haystack = `${product.name} ${product.category} ${product.description}`.toLowerCase();
+      const haystack = `${product.line} ${product.category} ${product.variantType} ${product.variantColor} ${product.name} ${product.description}`.toLowerCase();
       return haystack.includes(normalizedQuery);
     });
   }, [favourites, normalizedQuery]);
@@ -34,8 +34,7 @@ export default function FavouritesClient({ products }: FavouritesClientProps) {
   return (
     <>
       <Topbar
-        title="Favourites"
-        subtitle="Saved for later"
+        title=""
         showSearch
         searchValue={query}
         searchPlaceholder="Search favourites"
@@ -55,9 +54,7 @@ export default function FavouritesClient({ products }: FavouritesClientProps) {
                 <circle cx="18" cy="20" r="1.5" fill="currentColor" />
               </svg>
             </Link>
-            <Link href="/account" className="avatar" aria-label="Account">
-              EA
-            </Link>
+
           </div>
         }
       />

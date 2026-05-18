@@ -23,7 +23,7 @@ const navItems = [
   {
     href: "/favourites",
     label: "Favourites",
-    badge: "6",
+    badge: "0",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -51,30 +51,6 @@ const navItems = [
         />
         <circle cx="10" cy="20" r="1.5" fill="currentColor" />
         <circle cx="18" cy="20" r="1.5" fill="currentColor" />
-      </svg>
-    )
-  },
-  {
-    href: "/account",
-    label: "Account",
-    badge: null,
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle
-          cx="12"
-          cy="8"
-          r="4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <path
-          d="M4 21a8 8 0 0 1 16 0"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
       </svg>
     )
   }
