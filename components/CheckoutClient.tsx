@@ -11,7 +11,6 @@ type CartLine = {
   item: CartItem & { size: string; color: string };
   product: Product;
   lineTotal: number;
-  hierarchy?: string[]; // Include hierarchy fields if needed later
 };
 function buildLines(items: CartItem[]): CartLine[] {
   const lines: CartLine[] = [];

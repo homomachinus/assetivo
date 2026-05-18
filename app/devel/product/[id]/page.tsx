@@ -23,7 +23,12 @@ export default function DevelProductDetailPage({
     notFound();
   }
 
-  const related = getRelatedProducts(product.category, product.id, 4);
+  const related = getRelatedProducts(
+    product.line,
+    product.category,
+    product.id,
+    4
+  );
 
   return (
     <AppShell>
