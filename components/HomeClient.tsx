@@ -76,7 +76,7 @@ export default function HomeClient({ products }: HomeClientProps) {
               <Link className="btn btn-primary" href={`/product/${heroProduct.id}`}>
                 Shop now
               </Link>
-              <Link className="btn btn-outline" href="/checkout">
+              <Link className="btn" href="/checkout">
                 Fast checkout
               </Link>
             </div>

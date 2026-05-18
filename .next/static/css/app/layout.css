@@ -263,7 +263,7 @@ h1,
 h2,
 h3,
 .display {
-  font-family: var(--font-display), serif;
+  font-family: "Montserrat", serif;
 }
 
 p {
@@ -595,6 +595,10 @@ p {
 
 .homebtn-card {
 background-color: rgba(255, 0, 0, 0);
+border: none;
+}
+.hero-title {
+    font-family: "Montserrat";
 }
 
 .hero-figure img {
@@ -940,7 +944,7 @@ background-color: rgba(255, 0, 0, 0);
   height: 88px;
   border-radius: 14px;
   object-fit: cover;
-  background: #f3f0ea;
+  background: #f3f0ea00;
 }
 
 .cart-meta {
