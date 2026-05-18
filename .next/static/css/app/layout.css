@@ -593,6 +593,10 @@ p {
   background-color: rgba(255, 255, 255, 0.634);
 }
 
+.homebtn-card {
+background-color: rgba(255, 0, 0, 0);
+}
+
 .hero-figure img {
   border-radius: 20px;
   box-shadow: var(--shadow);

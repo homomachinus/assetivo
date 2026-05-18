@@ -34,34 +34,34 @@ export default function HomeClient({ products }: HomeClientProps) {
 
   return (
     <>
-      <Topbar
-        title="Emon Ahmed"
-        subtitle="Good morning"
-        showSearch
-        searchValue={query}
-        searchPlaceholder="Search products or categories"
-        onSearchChange={setQuery}
-        actions={
-          <div className="action-row">
-            <Link href="/devel/cart" className="icon-btn" aria-label="Cart">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinejoin="round"
-                />
-                <circle cx="10" cy="20" r="1.5" fill="currentColor" />
-                <circle cx="18" cy="20" r="1.5" fill="currentColor" />
-              </svg>
-            </Link>
-            <Link href="/devel/account" className="avatar" aria-label="Account">
-              EA
-            </Link>
-          </div>
-        }
-      />
+<Topbar
+  title="Emon Ahmed"
+  subtitle="Good morning"
+  showSearch
+  searchValue={query}
+  searchPlaceholder="Search products or categories"
+  onSearchChange={setQuery}
+  actions={
+    <div className="action-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: 'auto' }}>
+      <Link href="/cart" className="icon-btn homebtn-card" aria-label="Cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <circle cx="10" cy="20" r="1.5" fill="currentColor" />
+          <circle cx="18" cy="20" r="1.5" fill="currentColor" />
+        </svg>
+      </Link>
+      <Link href="/account" className="avatar" aria-label="Account">
+        EA
+      </Link>
+    </div>
+  }
+/>
 
       {heroProduct ? (
         <section className="hero fade-up">
@@ -73,10 +73,10 @@ export default function HomeClient({ products }: HomeClientProps) {
               the season.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href={`/devel/product/${heroProduct.id}`}>
+              <Link className="btn btn-primary" href={`/product/${heroProduct.id}`}>
                 Shop now
               </Link>
-              <Link className="btn btn-outline" href="/devel/checkout">
+              <Link className="btn btn-outline" href="/checkout">
                 Fast checkout
               </Link>
             </div>
@@ -103,7 +103,7 @@ export default function HomeClient({ products }: HomeClientProps) {
       <section className="section fade-up">
         <div className="section-head">
           <h2 className="section-title">Categories</h2>
-          <Link className="section-link" href="/devel/favourites">
+          <Link className="section-link" href="/favourites">
             View favourites
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default function HomeClient({ products }: HomeClientProps) {
       <section className="section fade-up" id="arrivals">
         <div className="section-head">
           <h2 className="section-title">New arrivals</h2>
-          <Link className="section-link" href="/devel/cart">
+          <Link className="section-link" href="/cart">
             Go to cart
           </Link>
         </div>

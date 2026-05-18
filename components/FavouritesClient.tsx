@@ -42,7 +42,7 @@ export default function FavouritesClient({ products }: FavouritesClientProps) {
         onSearchChange={setQuery}
         actions={
           <div className="action-row">
-            <Link href="/devel/cart" className="icon-btn" aria-label="Cart">
+            <Link href="/cart" className="icon-btn" aria-label="Cart">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
@@ -55,7 +55,7 @@ export default function FavouritesClient({ products }: FavouritesClientProps) {
                 <circle cx="18" cy="20" r="1.5" fill="currentColor" />
               </svg>
             </Link>
-            <Link href="/devel/account" className="avatar" aria-label="Account">
+            <Link href="/account" className="avatar" aria-label="Account">
               EA
             </Link>
           </div>
