@@ -43,7 +43,7 @@ export default function HomeClient({ products }: HomeClientProps) {
         onSearchChange={setQuery}
         actions={
           <div className="action-row">
-            <Link href="/cart" className="icon-btn" aria-label="Cart">
+            <Link href="/devel/cart" className="icon-btn" aria-label="Cart">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
@@ -56,7 +56,7 @@ export default function HomeClient({ products }: HomeClientProps) {
                 <circle cx="18" cy="20" r="1.5" fill="currentColor" />
               </svg>
             </Link>
-            <Link href="/account" className="avatar" aria-label="Account">
+            <Link href="/devel/account" className="avatar" aria-label="Account">
               EA
             </Link>
           </div>
@@ -73,10 +73,10 @@ export default function HomeClient({ products }: HomeClientProps) {
               the season.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href={`/product/${heroProduct.id}`}>
+              <Link className="btn btn-primary" href={`/devel/product/${heroProduct.id}`}>
                 Shop now
               </Link>
-              <Link className="btn btn-outline" href="/checkout">
+              <Link className="btn btn-outline" href="/devel/checkout">
                 Fast checkout
               </Link>
             </div>
@@ -103,7 +103,7 @@ export default function HomeClient({ products }: HomeClientProps) {
       <section className="section fade-up">
         <div className="section-head">
           <h2 className="section-title">Categories</h2>
-          <Link className="section-link" href="/favourites">
+          <Link className="section-link" href="/devel/favourites">
             View favourites
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default function HomeClient({ products }: HomeClientProps) {
       <section className="section fade-up" id="arrivals">
         <div className="section-head">
           <h2 className="section-title">New arrivals</h2>
-          <Link className="section-link" href="/cart">
+          <Link className="section-link" href="/devel/cart">
             Go to cart
           </Link>
         </div>

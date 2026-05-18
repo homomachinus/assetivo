@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   {
-    href: "/",
+    href: "/devel",
     label: "Home",
     badge: null,
     icon: (
@@ -21,7 +21,7 @@ const navItems = [
     )
   },
   {
-    href: "/favourites",
+    href: "/devel/favourites",
     label: "Favourites",
     badge: "6",
     icon: (
@@ -37,7 +37,7 @@ const navItems = [
     )
   },
   {
-    href: "/cart",
+    href: "/devel/cart",
     label: "Cart",
     badge: "3",
     icon: (
@@ -55,7 +55,7 @@ const navItems = [
     )
   },
   {
-    href: "/account",
+    href: "/devel/account",
     label: "Account",
     badge: null,
     icon: (
@@ -84,7 +84,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+    href === "/devel" ? pathname === "/devel" : pathname.startsWith(href);
 
   return (
     <>
