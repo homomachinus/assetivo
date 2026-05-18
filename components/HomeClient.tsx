@@ -36,6 +36,7 @@ export default function HomeClient({ products }: HomeClientProps) {
     <>
 <Topbar
 
+  title=""
   showSearch
   searchValue={query}
   searchPlaceholder="Search products or categories"

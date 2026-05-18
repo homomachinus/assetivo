@@ -9,7 +9,7 @@ import { getCartTotals } from "@/lib/catalog";
 import { readCartCookie, type CartItem } from "@/lib/cart-cookie";
 
 type CartLine = {
-  item: CartItem;
+  item: CartItem & { size: string; color: string };
   product: Product;
   lineTotal: number;
 };

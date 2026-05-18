@@ -8,30 +8,24 @@ import { getCartTotals } from "@/lib/catalog";
 import { readCartCookie, type CartItem } from "@/lib/cart-cookie";
 
 type CartLine = {
-  item: CartItem;
+  item: CartItem & { size: string; color: string };
   product: Product;
   lineTotal: number;
 };
-
 function buildLines(items: CartItem[]): CartLine[] {
-  return items
-    .map((item) => {
-      const product = products.find((entry) => entry.id === item.productId);
-      if (!product) {
-        return null;
-      }
-
-      return {
-        item: {
-          ...item,
-          size: item.size ?? product.sizes[0] ?? "One size",
-          color: item.color ?? product.colors[0]?.name ?? "Default"
-        },
-        product,
-        lineTotal: product.price * item.quantity
-      };
-    })
-    .filter((line): line is CartLine => line !== null);
+  const lines: CartLine[] = [];
+  for (const item of items) {
+    const product = products.find((entry) => entry.id === item.productId);
+    if (!product) continue;
+    const size = item.size ?? product.sizes[0] ?? "One size";
+    const color = item.color ?? product.colors[0]?.name ?? "Default";
+    lines.push({
+      item: { ...item, size, color },
+      product,
+      lineTotal: product.price * item.quantity,
+    });
+  }
+  return lines;
 }
 
 export default function CheckoutClient() {

@@ -36,7 +36,6 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             />
           </svg>
         </span>
-        {product.tag && <span className="card-tag">{product.tag}</span>}
       </div>
       <div className="product-info">
         <h3>{product.name}</h3>
