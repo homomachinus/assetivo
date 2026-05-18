@@ -35,8 +35,7 @@ export default function HomeClient({ products }: HomeClientProps) {
   return (
     <>
 <Topbar
-  title="Emon Ahmed"
-  subtitle="Good morning"
+
   showSearch
   searchValue={query}
   searchPlaceholder="Search products or categories"
@@ -56,9 +55,7 @@ export default function HomeClient({ products }: HomeClientProps) {
           <circle cx="18" cy="20" r="1.5" fill="currentColor" />
         </svg>
       </Link>
-      <Link href="/account" className="avatar" aria-label="Account">
-        EA
-      </Link>
+
     </div>
   }
 />

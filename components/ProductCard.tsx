@@ -21,6 +21,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           height={420}
           priority={priority}
           sizes="(max-width: 768px) 100vw, 280px"
+          style={{ objectFit: "contain", height: "180px", width: "100%" }}
         />
         <span
           className={`like-btn${product.favourite ? " active" : ""}`}
@@ -35,7 +36,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             />
           </svg>
         </span>
-        <span className="card-tag">New</span>
+        {product.tag && <span className="card-tag">{product.tag}</span>}
       </div>
       <div className="product-info">
         <h3>{product.name}</h3>

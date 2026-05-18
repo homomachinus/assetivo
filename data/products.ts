@@ -65,7 +65,7 @@ export const products: Product[] = [
     was: 690,
     category: "jackets",
     image:
-      "/assets/cover/image1.png",
+      "/assets/cover/image4.png",
     description:
       "Lightweight layering jacket with modern utility pockets.",
     details: [

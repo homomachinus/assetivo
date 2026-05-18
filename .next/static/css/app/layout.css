@@ -192,6 +192,8 @@
   --radius-md: 16px;
   --radius-sm: 12px;
 }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 @font-face {
     font-family: "Agrozza Demo";
@@ -203,17 +205,6 @@
     url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.svg#Agrozza Demo")format("svg");
 }
 
-@font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/Montserrat-Regular.woff2") format("woff2");
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/Montserrat-Bold.woff2") format("woff2");
-  font-weight: 700;
-}
 
 *,
 *::before,
@@ -473,8 +464,8 @@ p {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: none;
+  background: #ffffff00;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -694,9 +685,10 @@ border: none;
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 260px));
   grid-gap: 20px;
   gap: 20px;
+  justify-content: start;
 }
 
 .empty-state {
@@ -850,11 +842,25 @@ border: none;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
+
+.product-title {
+  margin: 0;
+}
+
+.product-description {
+  margin: 0;
+}
+
+.price-row {
+  margin: 0;
+}
+
 .product-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  grid-gap: 28px;
-  gap: 28px;
+  grid-gap: 22px;
+  gap: 22px;
+  align-items: center;
 }
 
 .product-gallery {
@@ -863,9 +869,13 @@ border: none;
   gap: 18px;
 }
 
+
+
 .product-gallery img {
   border-radius: var(--radius-md);
-  object-fit: cover;
+  object-fit: contain;  /* was cover — this was causing the crop */
+  width: 100%;
+  height: auto;
 }
 
 .thumb-row {
@@ -879,23 +889,42 @@ border: none;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 24px;
-  display: grid;
-  grid-gap: 18px;
-  gap: 18px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  height: -moz-fit-content;
+  height: fit-content;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
 
 .pill {
   background: var(--gold-light);
   color: var(--gold-dark);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   width: -moz-fit-content;
   width: fit-content;
+}
+
+.product-title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.product-description {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 0;
 }
 
 .option-list {
