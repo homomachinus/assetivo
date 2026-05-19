@@ -1,26 +1,69 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
+import {
+  PRODUCTS_SELECT,
+  mapDbProducts,
+  type DbProductRow
+} from "@/lib/products";
+import {
+  requireString,
+  requireNumber,
+  optionalString,
+  successResponse,
+  errorResponse,
+  catchError
+} from "@/lib/api-helpers";
 
-function requireString(value: unknown, field: string): string {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`${field} is required`);
-  }
-  return value.trim();
-}
+// ── GET /api/catalog/products ──────────────────────────────────────
+// List all products with joined names. Supports query filters:
+//   ?lineId=      — filter by product line
+//   ?categoryId=  — filter by category
+//   ?search=      — search by title (ilike)
+//   ?limit=       — limit results (default: 100)
+//   ?offset=      — offset for pagination (default: 0)
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const lineId = searchParams.get("lineId");
+    const categoryId = searchParams.get("categoryId");
+    const search = searchParams.get("search");
+    const limit = Math.min(Number(searchParams.get("limit") || 100), 500);
+    const offset = Number(searchParams.get("offset") || 0);
 
-function requireNumber(value: unknown, field: string): number {
-  if (typeof value === "number" && !Number.isNaN(value)) {
-    return value;
-  }
-  if (typeof value === "string" && value.trim().length > 0) {
-    const parsed = Number(value);
-    if (!Number.isNaN(parsed)) {
-      return parsed;
+    const supabase = getSupabaseServer();
+    let query = supabase
+      .from("products")
+      .select(PRODUCTS_SELECT, { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    if (lineId) query = query.eq("line_id", lineId);
+    if (categoryId) query = query.eq("category_id", categoryId);
+    if (search) query = query.ilike("title", `%${search}%`);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      return errorResponse(error.message, 500);
     }
+
+    const mapped = mapDbProducts((data ?? []) as unknown as DbProductRow[]);
+    const response = NextResponse.json({
+      data: mapped,
+      meta: { total: count ?? mapped.length, limit, offset }
+    });
+    response.headers.set(
+      "Cache-Control",
+      "public, max-age=30, stale-while-revalidate=300"
+    );
+    return response;
+  } catch (error) {
+    return catchError(error);
   }
-  throw new Error(`${field} is required`);
 }
 
+// ── POST /api/catalog/products ─────────────────────────────────────
+// Create a new product with FK validation
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -30,10 +73,11 @@ export async function POST(request: Request) {
     const variantColorId = requireString(body?.variantColorId, "variantColorId");
     const title = requireString(body?.title, "title");
     const price = requireNumber(body?.price, "price");
-    const currency = typeof body?.currency === "string" && body.currency.trim()
-      ? body.currency.trim()
-      : "IDR";
-    const description = typeof body?.description === "string" ? body.description.trim() : null;
+    const currency =
+      typeof body?.currency === "string" && body.currency.trim()
+        ? body.currency.trim()
+        : "IDR";
+    const description = optionalString(body?.description);
     const imageUrlRaw =
       typeof body?.imageUrl === "string"
         ? body.imageUrl
@@ -44,6 +88,7 @@ export async function POST(request: Request) {
 
     const supabase = getSupabaseServer();
 
+    // Validate category belongs to line
     const { data: categoryRow, error: categoryError } = await supabase
       .from("product_categories")
       .select("id,line_id")
@@ -51,13 +96,13 @@ export async function POST(request: Request) {
       .single();
 
     if (categoryError || !categoryRow) {
-      return NextResponse.json({ error: "Invalid categoryId" }, { status: 400 });
+      return errorResponse("Invalid categoryId", 400);
     }
-
     if (categoryRow.line_id !== lineId) {
-      return NextResponse.json({ error: "categoryId does not belong to lineId" }, { status: 400 });
+      return errorResponse("categoryId does not belong to lineId", 400);
     }
 
+    // Validate variant type belongs to category
     const { data: typeRow, error: typeError } = await supabase
       .from("variant_types")
       .select("id,category_id")
@@ -65,13 +110,13 @@ export async function POST(request: Request) {
       .single();
 
     if (typeError || !typeRow) {
-      return NextResponse.json({ error: "Invalid variantTypeId" }, { status: 400 });
+      return errorResponse("Invalid variantTypeId", 400);
     }
-
     if (typeRow.category_id !== categoryId) {
-      return NextResponse.json({ error: "variantTypeId does not belong to categoryId" }, { status: 400 });
+      return errorResponse("variantTypeId does not belong to categoryId", 400);
     }
 
+    // Validate color exists
     const { data: colorRow, error: colorError } = await supabase
       .from("variant_colors")
       .select("id")
@@ -79,7 +124,7 @@ export async function POST(request: Request) {
       .single();
 
     if (colorError || !colorRow) {
-      return NextResponse.json({ error: "Invalid variantColorId" }, { status: 400 });
+      return errorResponse("Invalid variantColorId", 400);
     }
 
     const { data: insertRow, error: insertError } = await supabase
@@ -95,16 +140,15 @@ export async function POST(request: Request) {
         currency,
         image_url: imageUrl
       })
-      .select("id")
+      .select("id,title,price,currency,created_at")
       .single();
 
     if (insertError) {
-      return NextResponse.json({ error: insertError.message }, { status: 500 });
+      return errorResponse(insertError.message, 500);
     }
 
-    return NextResponse.json({ data: insertRow });
+    return successResponse(insertRow, 201);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Invalid request";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return catchError(error);
   }
 }
