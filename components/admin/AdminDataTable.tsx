@@ -158,13 +158,15 @@ export default function AdminDataTable<T extends Record<string, any>>({
                       {col.render ? col.render(item) : String(item[col.key as keyof T] ?? "-")}
                     </td>
                   ))}
-                  <td style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", gap: 4 }}>
-                    <button className="admin-action-btn" onClick={() => handleOpenEdit(item)} title="Edit">
-                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>edit</span>
-                    </button>
-                    <button className="admin-action-btn delete" onClick={() => handleDelete(item)} title="Delete">
-                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>delete</span>
-                    </button>
+                  <td style={{ textAlign: "right" }}>
+                    <div style={{ display: "flex", justifyContent: "flex-end", gap: 4 }}>
+                      <button className="admin-action-btn" onClick={() => handleOpenEdit(item)} title="Edit">
+                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>edit</span>
+                      </button>
+                      <button className="admin-action-btn delete" onClick={() => handleDelete(item)} title="Delete">
+                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

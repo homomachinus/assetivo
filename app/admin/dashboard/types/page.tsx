@@ -11,7 +11,6 @@ type VariantType = {
 
 export default function AdminTypesPage() {
   const columns: ColumnDef<VariantType>[] = [
-    { key: "id", label: "ID" },
     { key: "name", label: "Name" },
     { key: "description", label: "Description" },
   ];

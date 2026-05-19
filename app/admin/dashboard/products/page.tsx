@@ -6,78 +6,92 @@ import { FormField } from "@/components/admin/AdminFormModal";
 
 type Product = {
   id: string;
-  name: string;
-  slug: string;
+  title: string;
+  description: string;
   price: number;
-  stock: number;
+  currency: string;
+  image_url: string;
   category_id: string;
   line_id: string;
-  is_active: boolean;
+  variant_type_id: string;
+  variant_color_id: string;
 };
 
 export default function AdminProductsPage() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [lines, setLines] = useState<{ id: string; name: string }[]>([]);
+  const [types, setTypes] = useState<{ id: string; name: string }[]>([]);
+  const [colors, setColors] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
     Promise.all([
       fetch("/api/catalog/categories").then(res => res.json()),
-      fetch("/api/catalog/lines").then(res => res.json())
-    ]).then(([cats, lns]) => {
+      fetch("/api/catalog/lines").then(res => res.json()),
+      fetch("/api/catalog/types").then(res => res.json()),
+      fetch("/api/catalog/colors").then(res => res.json())
+    ]).then(([cats, lns, typs, cols]) => {
       setCategories(cats.data || []);
       setLines(lns.data || []);
+      setTypes(typs.data || []);
+      setColors(cols.data || []);
     });
   }, []);
 
   const columns: ColumnDef<Product>[] = [
-    { key: "name", label: "Name" },
-    { key: "slug", label: "Slug" },
+    {
+      key: "image_url",
+      label: "Image",
+      render: (item) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img 
+          src={item.image_url || "https://placehold.co/100x100"} 
+          alt={item.title} 
+          style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, backgroundColor: "var(--line)" }} 
+        />
+      ),
+    },
+    { key: "title", label: "Title" },
     { 
       key: "price", 
       label: "Price",
-      render: (item) => `$${item.price.toFixed(2)}`
-    },
-    { 
-      key: "stock", 
-      label: "Stock",
-      render: (item) => (
-        <span className={`admin-badge ${item.stock > 10 ? "success" : item.stock > 0 ? "warning" : "error"}`}>
-          {item.stock} in stock
-        </span>
-      )
-    },
-    {
-      key: "is_active",
-      label: "Status",
-      render: (item) => (
-        <span className={`admin-badge ${item.is_active ? "success" : "neutral"}`}>
-          {item.is_active ? "Active" : "Inactive"}
-        </span>
-      ),
-    },
+      render: (item) => `${item.currency || "IDR"} ${item.price.toLocaleString()}`
+    }
   ];
 
   const formFields: FormField[] = [
-    { name: "name", label: "Product Name", type: "text", required: true },
-    { name: "slug", label: "Slug", type: "text", required: true },
+    { name: "title", label: "Product Title", type: "text", required: true },
     { name: "description", label: "Description", type: "textarea" },
-    { name: "price", label: "Price ($)", type: "number", required: true },
-    { name: "sale_price", label: "Sale Price ($)", type: "number" },
-    { name: "stock", label: "Stock Quantity", type: "number", required: true },
+    { name: "price", label: "Price", type: "number", required: true },
+    { name: "currency", label: "Currency", type: "text" },
+    { name: "imageUrl", label: "Image URL", type: "text" },
     { 
-      name: "category_id", 
+      name: "lineId", 
+      label: "Product Line", 
+      type: "select", 
+      options: lines.map(l => ({ label: l.name, value: l.id })),
+      required: true
+    },
+    { 
+      name: "categoryId", 
       label: "Category", 
       type: "select", 
       options: categories.map(c => ({ label: c.name, value: c.id })),
       required: true 
     },
     { 
-      name: "line_id", 
-      label: "Product Line", 
+      name: "variantTypeId", 
+      label: "Variant Type", 
       type: "select", 
-      options: lines.map(l => ({ label: l.name, value: l.id })),
+      options: types.map(c => ({ label: c.name, value: c.id })),
+      required: true 
     },
-    { name: "is_active", label: "Active", type: "boolean" },
+    { 
+      name: "variantColorId", 
+      label: "Variant Color", 
+      type: "select", 
+      options: colors.map(c => ({ label: c.name, value: c.id })),
+      required: true 
+    }
   ];
 
   return (
