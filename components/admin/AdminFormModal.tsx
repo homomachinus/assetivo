@@ -49,7 +49,44 @@ export default function AdminFormModal({
   }, [fields, initialData]);
 
   const handleChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+      
+      // Auto-fill slug if name or title changes
+      if ((name === "name" || name === "title") && fields.some((f) => f.name === "slug")) {
+        // Only autofill if it's a new item (no initialData ID) or we want to force it
+        // Actually, let's just always autofill for convenience if the user types
+        const slugified = (value || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        next.slug = slugified;
+      }
+      
+      return next;
+    });
+  };
+
+  const handleFileUpload = async (name: string, file: File) => {
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.append("file", file);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: data,
+      });
+
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Upload failed");
+
+      handleChange(name, json.url);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,7 +127,30 @@ export default function AdminFormModal({
                     {field.label} {field.required && <span style={{ color: "red" }}>*</span>}
                   </label>
                   
-                  {field.type === "text" || field.type === "number" || field.type === "image" ? (
+                  {field.type === "image" ? (
+                    <div className="admin-input-wrap" style={{ flexDirection: "column", alignItems: "flex-start", gap: 8, padding: "12px", height: "auto" }}>
+                      {formData[field.name] && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img 
+                          src={formData[field.name]} 
+                          alt="Preview" 
+                          style={{ width: "100%", maxWidth: 200, height: "auto", borderRadius: 8, border: "1px solid var(--line)", marginBottom: 8 }} 
+                        />
+                      )}
+                      <input
+                        id={`field-${field.name}`}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileUpload(field.name, file);
+                        }}
+                        style={{ width: "100%" }}
+                        required={field.required && !formData[field.name]}
+                      />
+                      <input type="hidden" value={formData[field.name] ?? ""} name={field.name} />
+                    </div>
+                  ) : field.type === "text" || field.type === "number" ? (
                     <div className="admin-input-wrap">
                       <input
                         id={`field-${field.name}`}

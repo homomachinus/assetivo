@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/admin/dashboard":{},"/devel":{},"/devel/product/[id]":{},"/":{},"/favourites":{},"/product/[id]":{},"/devel/favourites":{},"/admin":{}}}
+{"version":1,"functions":{"/admin":{},"/admin/dashboard":{},"/devel/favourites":{},"/devel":{},"/devel/product/[id]":{},"/":{},"/favourites":{},"/product/[id]":{}}}

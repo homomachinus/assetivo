@@ -106,6 +106,19 @@ export default function AdminDataTable<T extends Record<string, any>>({
     }
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const totalPages = Math.ceil(data.length / pageSize) || 1;
+  const paginatedData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  useEffect(() => {
+    // Reset to page 1 if data shrinks below current page
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [data.length, totalPages, currentPage]);
+
   return (
     <div className="admin-card fade-up">
       <div className="admin-header-actions">
@@ -151,7 +164,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
                 </td>
               </tr>
             ) : (
-              data.map((item, i) => (
+              paginatedData.map((item, i) => (
                 <tr key={item[primaryKey as string] || i}>
                   {columns.map((col) => (
                     <td key={String(col.key)}>
@@ -174,6 +187,47 @@ export default function AdminDataTable<T extends Record<string, any>>({
           </tbody>
         </table>
       </div>
+
+      {data.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--line)', flexWrap: 'wrap', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 13, color: 'var(--muted)' }}>
+              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, data.length)} of {data.length} entries
+            </span>
+            <select 
+              value={pageSize} 
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+              style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid var(--line)', background: 'var(--background)', color: 'var(--foreground)', fontSize: 13, cursor: 'pointer', outline: 'none' }}
+            >
+              {[10, 20, 50].map(size => (
+                <option key={size} value={size}>{size} per page</option>
+              ))}
+            </select>
+          </div>
+          
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button 
+              className="btn btn-outline" 
+              style={{ padding: '6px 16px', fontSize: 13, minWidth: 80, justifyContent: 'center' }} 
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            >
+              Previous
+            </button>
+            <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', fontSize: 13, fontWeight: 500 }}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button 
+              className="btn btn-outline" 
+              style={{ padding: '6px 16px', fontSize: 13, minWidth: 80, justifyContent: 'center' }} 
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       {isModalOpen && (
         <AdminFormModal

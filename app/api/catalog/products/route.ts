@@ -24,10 +24,16 @@ function requireNumber(value: unknown, field: string): number {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const lineId = requireString(body?.lineId, "lineId");
-    const categoryId = requireString(body?.categoryId, "categoryId");
-    const variantTypeId = requireString(body?.variantTypeId, "variantTypeId");
-    const variantColorId = requireString(body?.variantColorId, "variantColorId");
+    const lineIdRaw = body?.line_id ?? body?.lineId;
+    const categoryIdRaw = body?.category_id ?? body?.categoryId;
+    const lineId = requireString(lineIdRaw, "line_id");
+    const categoryId = requireString(categoryIdRaw, "category_id");
+    
+    const variantTypeIdRaw = body?.variant_type_id ?? body?.variantTypeId;
+    const variantColorIdRaw = body?.variant_color_id ?? body?.variantColorId;
+    const variantTypeId = typeof variantTypeIdRaw === "string" ? variantTypeIdRaw.trim() : "";
+    const variantColorId = typeof variantColorIdRaw === "string" ? variantColorIdRaw.trim() : "";
+
     const title = requireString(body?.title, "title");
     const price = requireNumber(body?.price, "price");
     const currency = typeof body?.currency === "string" && body.currency.trim()
@@ -58,28 +64,32 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "categoryId does not belong to lineId" }, { status: 400 });
     }
 
-    const { data: typeRow, error: typeError } = await supabase
-      .from("variant_types")
-      .select("id,category_id")
-      .eq("id", variantTypeId)
-      .single();
+    if (variantTypeId !== "") {
+      const { data: typeRow, error: typeError } = await supabase
+        .from("variant_types")
+        .select("id,category_id")
+        .eq("id", variantTypeId)
+        .single();
 
-    if (typeError || !typeRow) {
-      return NextResponse.json({ error: "Invalid variantTypeId" }, { status: 400 });
+      if (typeError || !typeRow) {
+        return NextResponse.json({ error: "Invalid variantTypeId" }, { status: 400 });
+      }
+
+      if (typeRow.category_id !== categoryId) {
+        return NextResponse.json({ error: "variantTypeId does not belong to categoryId" }, { status: 400 });
+      }
     }
 
-    if (typeRow.category_id !== categoryId) {
-      return NextResponse.json({ error: "variantTypeId does not belong to categoryId" }, { status: 400 });
-    }
+    if (variantColorId !== "") {
+      const { data: colorRow, error: colorError } = await supabase
+        .from("variant_colors")
+        .select("id")
+        .eq("id", variantColorId)
+        .single();
 
-    const { data: colorRow, error: colorError } = await supabase
-      .from("variant_colors")
-      .select("id")
-      .eq("id", variantColorId)
-      .single();
-
-    if (colorError || !colorRow) {
-      return NextResponse.json({ error: "Invalid variantColorId" }, { status: 400 });
+      if (colorError || !colorRow) {
+        return NextResponse.json({ error: "Invalid variantColorId" }, { status: 400 });
+      }
     }
 
     const { data: insertRow, error: insertError } = await supabase

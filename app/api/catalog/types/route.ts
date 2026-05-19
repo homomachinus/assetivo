@@ -46,7 +46,8 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const categoryId = requireString(body?.categoryId, "categoryId");
+    const categoryIdRaw = body?.category_id ?? body?.categoryId;
+    const categoryId = requireString(categoryIdRaw, "category_id");
     const name = requireString(body?.name, "name");
 
     const supabase = getSupabaseServer();

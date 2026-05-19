@@ -63,34 +63,32 @@ export default function AdminProductsPage() {
     { name: "description", label: "Description", type: "textarea" },
     { name: "price", label: "Price", type: "number", required: true },
     { name: "currency", label: "Currency", type: "text" },
-    { name: "imageUrl", label: "Image URL", type: "text" },
+    { name: "image_url", label: "Image", type: "image" },
     { 
-      name: "lineId", 
+      name: "line_id", 
       label: "Product Line", 
       type: "select", 
       options: lines.map(l => ({ label: l.name, value: l.id })),
       required: true
     },
     { 
-      name: "categoryId", 
+      name: "category_id", 
       label: "Category", 
       type: "select", 
       options: categories.map(c => ({ label: c.name, value: c.id })),
       required: true 
     },
     { 
-      name: "variantTypeId", 
+      name: "variant_type_id", 
       label: "Variant Type", 
       type: "select", 
-      options: types.map(c => ({ label: c.name, value: c.id })),
-      required: true 
+      options: types.map(c => ({ label: c.name, value: c.id }))
     },
     { 
-      name: "variantColorId", 
+      name: "variant_color_id", 
       label: "Variant Color", 
       type: "select", 
-      options: colors.map(c => ({ label: c.name, value: c.id })),
-      required: true 
+      options: colors.map(c => ({ label: c.name, value: c.id }))
     }
   ];
 

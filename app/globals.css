@@ -1726,6 +1726,7 @@ p {
   display: flex;
   flex-direction: column;
   z-index: 10;
+  border: none;
 }
 
 .admin-sidebar-header {
@@ -1735,6 +1736,7 @@ p {
   align-items: center;
   gap: 12px;
   border-bottom: 1px solid var(--line);
+  border: none;
 }
 
 .admin-sidebar-header .brand {
@@ -1875,6 +1877,7 @@ p {
   background-color: var(--surface);
   border-bottom: 1px solid var(--line);
   z-index: 5;
+  border: none;
 }
 
 .admin-topbar-title h2 {

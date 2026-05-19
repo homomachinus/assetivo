@@ -47,7 +47,8 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const lineId = requireString(body?.lineId, "lineId");
+    const lineIdRaw = body?.line_id ?? body?.lineId;
+    const lineId = requireString(lineIdRaw, "line_id");
     const name = requireString(body?.name, "name");
     const description = optionalString(body?.description);
 
