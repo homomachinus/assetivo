@@ -82,32 +82,32 @@ export default function HomeClient({ products, heroProduct, lineItems }: HomeCli
 
   return (
     <>
-<Topbar
+      <Topbar
 
-  title=""
-  showSearch
-  searchValue={query}
-  searchPlaceholder="Search products or categories"
-  onSearchChange={setQuery}
-  actions={
-    <div className="action-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: 'auto' }}>
-      <Link href="/cart" className="icon-btn homebtn-card" aria-label="Cart">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <circle cx="10" cy="20" r="1.5" fill="currentColor" />
-          <circle cx="18" cy="20" r="1.5" fill="currentColor" />
-        </svg>
-      </Link>
+        title=""
+        showSearch
+        searchValue={query}
+        searchPlaceholder="Search products or categories"
+        onSearchChange={setQuery}
+        actions={
+          <div className="action-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: 'auto' }}>
+            <Link href="/cart" className="icon-btn homebtn-card" aria-label="Cart">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinejoin="round"
+                />
+                <circle cx="10" cy="20" r="1.5" fill="currentColor" />
+                <circle cx="18" cy="20" r="1.5" fill="currentColor" />
+              </svg>
+            </Link>
 
-    </div>
-  }
-/>
+          </div>
+        }
+      />
 
       {spotlightProduct ? (
         <section className="hero fade-up">
@@ -147,12 +147,7 @@ export default function HomeClient({ products, heroProduct, lineItems }: HomeCli
       ) : null}
 
       <section className="section fade-up">
-        <div className="section-head">
-          <h2 className="section-title">Product lines</h2>
-          <Link className="section-link" href="/favourites">
-            View favourites
-          </Link>
-        </div>
+
         <CategoryRow
           items={linesWithAll}
           activeId={activeLineId}
@@ -166,10 +161,6 @@ export default function HomeClient({ products, heroProduct, lineItems }: HomeCli
           <div className="line-stack">
             {grouped.map((group) => (
               <div key={group.line} className="line-block">
-                <div className="line-head">
-                  <h3 className="line-title">{group.line}</h3>
-                  <span className="line-meta">Product line</span>
-                </div>
                 {group.categories.map((categoryGroup) => (
                   <div key={categoryGroup.category} className="category-block">
                     <div className="category-head">

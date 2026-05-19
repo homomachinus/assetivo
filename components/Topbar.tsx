@@ -1,6 +1,7 @@
 "use client";
 
 import type { ChangeEvent, ReactNode } from "react";
+import DarkModeToggle from "./DarkModeToggle";
 
 type TopbarProps = {
   title: string;
@@ -68,6 +69,7 @@ export default function Topbar({
           </label>
         ) : null}
         {actions}
+        <DarkModeToggle />
       </div>
     </div>
   );

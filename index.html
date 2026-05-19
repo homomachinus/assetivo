@@ -1,140 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Coming Soon</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    * {
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    :root {
+      --fg: #e8e4df;
+      --fg-dim: rgba(232, 228, 223, 0.22);
+      --bg: #0a0908;
+    }
+
     body {
-      background: #000;
-      color: #fff;
+      background: var(--bg);
+      color: var(--fg);
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Helvetica, Arial, sans-serif;
+      font-family: 'Cormorant Garamond', Georgia, serif;
     }
 
-    .container {
-      text-align: center;
-      width: 100%;
-      padding: 0 20px;
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .word-wrapper {
+    .stage {
       position: relative;
-      display: grid;
-      grid-template-areas: "stack";
+      z-index: 1;
+      text-align: center;
+    }
+
+    .word-wrap {
+      position: relative;
+      height: 2.4em;
+      display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      padding: 10px 0; 
+      overflow: visible;
     }
 
     .word {
-      grid-area: stack;
-      font-size: clamp(2.5rem, 8vw, 5.5rem); 
+      position: absolute;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
       font-weight: 300;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--fg);
       opacity: 0;
-      transform: translateY(30px);
-      transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
+      transform: translateY(10px);
+      transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+      filter: blur(3px);
       white-space: nowrap;
+      will-change: opacity, transform, filter;
     }
 
     .word.active {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
 
     .word.exit {
       opacity: 0;
-      transform: translateY(-30px);
+      transform: translateY(-10px);
+      filter: blur(3px);
     }
 
-    .sub {
-      margin-top: 24px;
-      font-size: 0.9rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      opacity: 0.45;
-    }
-
-    .line {
-      width: 60px;
+    .rule {
+      width: 32px;
       height: 1px;
-      background: rgba(255,255,255,0.25);
-      margin: 28px auto 0;
+      background: var(--fg-dim);
+      margin: 1.8em auto 0;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="word-wrapper">
+  <canvas id="c"></canvas>
+
+  <div class="stage">
+    <div class="word-wrap">
       <div class="word active">Coming Soon</div>
     </div>
-
-
-
+    <div class="rule"></div>
   </div>
 
   <script>
-    const words = [
-      "Coming Soon",  
-      "Segera Hadir", 
-      "Badhe Rampung",
-      "Próximamente", 
-      "Bientôt",      
-      "間もなく",     
-      "곧 공개",      
-      "即将推出",     
-      "Segera Hadir", 
-      "Demnächst",    
-      "In Arrivo",    
-      "قريباً"         
-    ];
+    /* ── canvas grain ── */
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let w, h, imageData;
 
-    const wrapper = document.querySelector(".word-wrapper");
-    let index = 0;
-
-    function switchWord() {
-      const current = document.querySelector(".word.active");
-      
-      current.classList.remove("active");
-      current.classList.add("exit");
-
-      setTimeout(() => {
-        current.remove();
-
-        index = (index + 1) % words.length;
-
-        const next = document.createElement("div");
-        next.className = "word";
-        next.textContent = words[index];
-
-        wrapper.appendChild(next);
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            next.classList.add("active");
-          });
-        });
-      }, 800);
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      imageData = ctx.createImageData(w, h);
     }
 
-    setInterval(switchWord, 2000); 
+    function drawGrain(t) {
+      const d = imageData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const v = (Math.random() * 18 + Math.sin(t * 0.002 + i) * 3) | 0;
+        d[i] = d[i + 1] = d[i + 2] = v;
+        d[i + 3] = 22;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    let t = 0;
+    function loop() {
+      drawGrain(t++);
+      requestAnimationFrame(loop);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    loop();
+
+    /* ── word rotator ── */
+    const words = [
+      'Coming Soon',
+      'Segera Hadir',
+      'Próximamente',
+      'Bientôt',
+      '間もなく',
+      '곧 공개',
+      '即将推出',
+      'Demnächst',
+      'In Arrivo',
+      'قريباً',
+    ];
+
+    const wrap = document.querySelector('.word-wrap');
+    let idx = 0;
+
+    function next() {
+      const cur = document.querySelector('.word.active');
+      cur.classList.remove('active');
+      cur.classList.add('exit');
+
+      setTimeout(() => {
+        cur.remove();
+        idx = (idx + 1) % words.length;
+        const el = document.createElement('div');
+        el.className = 'word';
+        el.textContent = words[idx];
+        el.style.direction = words[idx] === 'قريباً' ? 'rtl' : 'ltr';
+        wrap.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('active')));
+      }, 900);
+    }
+
+    setInterval(next, 2800);
   </script>
 </body>
+
 </html>

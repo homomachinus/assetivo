@@ -39,7 +39,7 @@ const navItems = [
   {
     href: "/cart",
     label: "Cart",
-    badge: "3",
+    badge: "0",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -79,7 +79,6 @@ export default function Sidebar() {
               >
                 {item.icon}
                 <span>{item.label}</span>
-                {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
               </Link>
             );
           })}

@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   --gold: #f5c518;
   --gold-light: #fff3c4;
@@ -13,8 +16,19 @@
   --radius-md: 16px;
   --radius-sm: 12px;
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root.dark {
+  --gold: #f5c518;
+  --gold-light: #42350a;
+  --gold-dark: #fde047;
+  --ink: #f5f5f5;
+  --muted: #a3a3a3;
+  --canvas: #121212;
+  --surface: #1e1e1e;
+  --surface-muted: #2a2a2a;
+  --line: #333333;
+  --shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+}
 
 @font-face {
     font-family: "Agrozza Demo";
@@ -1613,4 +1627,402 @@ border: none;
     width: 180px;
     height: 180px;
   }
+}
+
+/* ================================================================
+   Admin Dashboard Layout
+   ================================================================ */
+
+.admin-dashboard-app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--canvas);
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--surface);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.admin-sidebar-header {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-sidebar-logo {
+  width: 32px;
+  height: 32px;
+  background-color: var(--gold);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-family: "Montserrat", serif;
+  color: var(--ink);
+}
+
+.admin-sidebar-brand {
+  font-weight: 700;
+  font-family: "Montserrat", serif;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.admin-sidebar-nav {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.admin-nav-item:hover {
+  background-color: var(--surface-muted);
+  color: var(--ink);
+}
+
+.admin-nav-item.active {
+  background-color: var(--gold-light);
+  color: var(--gold-dark);
+  font-weight: 600;
+}
+
+.admin-nav-icon {
+  font-size: 20px;
+}
+
+.admin-sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.admin-user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.admin-user-role {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.admin-logout-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-logout-btn:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.admin-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-topbar {
+  height: 72px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--line);
+  z-index: 5;
+}
+
+.admin-topbar-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Montserrat", serif;
+}
+
+.admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-muted);
+  color: var(--ink);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: 1px solid var(--line);
+}
+
+.admin-icon-btn:hover {
+  background-color: var(--line);
+}
+
+.admin-content-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+
+/* Common Admin UI Elements */
+.admin-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table-container {
+  overflow-x: auto;
+  margin-top: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--surface-muted);
+}
+
+.admin-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover td {
+  background-color: #fafafa;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.admin-badge.success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.admin-badge.warning {
+  background-color: #fef08a;
+  color: #854d0e;
+}
+
+.admin-badge.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-badge.neutral {
+  background-color: var(--line);
+  color: var(--muted);
+}
+
+.admin-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: var(--muted);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-action-btn:hover {
+  background-color: var(--line);
+  color: var(--ink);
+}
+
+.admin-action-btn.delete:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.admin-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Modal */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.admin-modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.admin-modal-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: "Montserrat", serif;
+}
+
+.admin-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+}
+
+.admin-modal-close:hover {
+  background-color: var(--line);
+}
+
+.admin-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.admin-modal-footer {
+  padding: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: var(--surface-muted);
 }
