@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         console.error("GET /api/products fallback error:", fallback.error.message);
         return NextResponse.json({ error: fallback.error.message }, { status: 500 });
       }
-      const mapped = mapDbProducts((fallback.data ?? []) as DbProductRow[]);
+      const mapped = mapDbProducts((fallback.data ?? []) as unknown as DbProductRow[]);
       const response = { data: mapped } as {
         data: ReturnType<typeof mapDbProducts>;
         meta?: { count: number; projectRef: string };
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       return result;
     }
 
-    const mapped = mapDbProducts((data ?? []) as DbProductRow[]);
+    const mapped = mapDbProducts((data ?? []) as unknown as DbProductRow[]);
     const response = { data: mapped } as {
       data: ReturnType<typeof mapDbProducts>;
       meta?: { count: number; projectRef: string };

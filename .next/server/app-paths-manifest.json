@@ -1,4 +1,25 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/account/page": "app/account/page.js",
+  "/api/catalog/colors/route": "app/api/catalog/colors/route.js",
+  "/api/catalog/categories/route": "app/api/catalog/categories/route.js",
+  "/api/catalog/lines/route": "app/api/catalog/lines/route.js",
+  "/api/catalog/products/route": "app/api/catalog/products/route.js",
+  "/api/catalog/types/route": "app/api/catalog/types/route.js",
+  "/api/payment-history/route": "app/api/payment-history/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/products/seed/route": "app/api/products/seed/route.js",
+  "/cart/page": "app/cart/page.js",
+  "/checkout/page": "app/checkout/page.js",
+  "/devel/account/page": "app/devel/account/page.js",
+  "/devel/cart/page": "app/devel/cart/page.js",
+  "/devel/checkout/page": "app/devel/checkout/page.js",
+  "/devel/order-success/page": "app/devel/order-success/page.js",
+  "/order-success/page": "app/order-success/page.js",
+  "/devel/page": "app/devel/page.js",
+  "/devel/favourites/page": "app/devel/favourites/page.js",
+  "/favourites/page": "app/favourites/page.js",
   "/page": "app/page.js",
-  "/product/[id]/page": "app/product/[id]/page.js"
+  "/product/[id]/page": "app/product/[id]/page.js",
+  "/devel/product/[id]/page": "app/devel/product/[id]/page.js"
 }

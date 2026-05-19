@@ -1,5 +1,6 @@
 import { cartItems, type CartItem } from "@/data/cart";
-import { products, type Product } from "@/data/products";
+import { products } from "@/data/products";
+import type { Product } from "@/lib/products";
 
 export type CartLine = {
   item: CartItem;

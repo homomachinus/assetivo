@@ -64,7 +64,7 @@ const fetchProductByIdCached = unstable_cache(
       return null;
     }
 
-    return mapDbProduct(data as DbProductRow);
+    return mapDbProduct(data as unknown as DbProductRow);
   },
   ["product-by-id"],
   { revalidate: 60 }
@@ -85,7 +85,7 @@ const fetchRelatedProductsCached = unstable_cache(
       return [];
     }
 
-    return mapDbProducts(data as DbProductRow[]);
+    return mapDbProducts(data as unknown as DbProductRow[]);
   },
   ["related-products"],
   { revalidate: 60 }
@@ -110,14 +110,14 @@ export async function fetchProducts(): Promise<Product[]> {
         }
         return [];
       }
-      return mapDbProducts(fallback.data as DbProductRow[]);
+      return mapDbProducts(fallback.data as unknown as DbProductRow[]);
     }
 
     if (!data) {
       return [];
     }
 
-    return mapDbProducts(data as DbProductRow[]);
+    return mapDbProducts(data as unknown as DbProductRow[]);
   } finally {
     logTiming("fetchProducts", startedAt);
   }
@@ -150,8 +150,7 @@ export async function fetchHomeCollectionProduct(): Promise<Product | null> {
       return null;
     }
 
-    return mapDbProduct(productRow as DbProductRow);
-  } finally {
+    return mapDbProduct(productRow as unknown as DbProductRow);  } finally {
     logTiming("fetchHomeCollectionProduct", startedAt);
   }
 }
