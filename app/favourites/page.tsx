@@ -1,8 +1,12 @@
 import AppShell from "@/components/AppShell";
 import FavouritesClient from "@/components/FavouritesClient";
-import { products } from "@/data/products";
+import { fetchProducts } from "@/lib/products.server";
 
-export default function FavouritesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function FavouritesPage() {
+  const products = await fetchProducts();
+
   return (
     <AppShell>
       <FavouritesClient products={products} />

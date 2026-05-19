@@ -1,6 +1,8 @@
 export type CartItem = {
   productId: string;
   quantity: number;
+  variantType?: string;
+  variantColor?: string;
   size?: string;
   color?: string;
 };
@@ -44,17 +46,27 @@ export function writeCartCookie(items: CartItem[]): void {
 
 export function addToCartCookie(item: CartItem): CartItem[] {
   const items = readCartCookie();
-  const existing = items.find(
-    (entry) =>
+  const desiredType = item.variantType ?? item.size;
+  const desiredColor = item.variantColor ?? item.color;
+
+  const existing = items.find((entry) => {
+    const entryType = entry.variantType ?? entry.size;
+    const entryColor = entry.variantColor ?? entry.color;
+    return (
       entry.productId === item.productId &&
-      entry.size === item.size &&
-      entry.color === item.color
-  );
+      entryType === desiredType &&
+      entryColor === desiredColor
+    );
+  });
 
   if (existing) {
     existing.quantity += item.quantity;
   } else {
-    items.push(item);
+    items.push({
+      ...item,
+      variantType: desiredType,
+      variantColor: desiredColor
+    });
   }
 
   writeCartCookie(items);

@@ -3,36 +3,54 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import CategoryRow from "@/components/CategoryRow";
+import CategoryRow, { type CategoryRowItem } from "@/components/CategoryRow";
 import ProductCard from "@/components/ProductCard";
 import Topbar from "@/components/Topbar";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
 
 type HomeClientProps = {
   products: Product[];
+  heroProduct?: Product | null;
+  lineItems?: CategoryRowItem[];
 };
 
-export default function HomeClient({ products }: HomeClientProps) {
+export default function HomeClient({ products, heroProduct, lineItems }: HomeClientProps) {
   const [query, setQuery] = useState("");
+  const [activeLineId, setActiveLineId] = useState("all");
   const trimmedQuery = query.trim();
   const normalizedQuery = trimmedQuery.toLowerCase();
 
   const filteredProducts = useMemo(() => {
-    if (!normalizedQuery) {
-      return products;
-    }
-
     return products.filter((product) => {
+      if (activeLineId !== "all" && product.lineId !== activeLineId) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
       const haystack = `${product.line} ${product.category} ${product.variantType} ${product.variantColor} ${product.name} ${product.description}`.toLowerCase();
       return haystack.includes(normalizedQuery);
     });
-  }, [products, normalizedQuery]);
+  }, [products, normalizedQuery, activeLineId]);
 
   const lines = useMemo(() => {
-    const unique = new Set(products.map((product) => product.line));
-    return Array.from(unique);
-  }, [products]);
+    if (lineItems && lineItems.length) {
+      return lineItems;
+    }
+    const unique = new Map<string, CategoryRowItem>();
+    products.forEach((product) => {
+      if (!product.lineId) return;
+      if (!unique.has(product.lineId)) {
+        unique.set(product.lineId, { id: product.lineId, label: product.line });
+      }
+    });
+    return Array.from(unique.values());
+  }, [lineItems, products]);
+
+  const linesWithAll = useMemo(() => {
+    return [{ id: "all", label: "All" }, ...lines];
+  }, [lines]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, Map<string, Product[]>>();
@@ -59,8 +77,8 @@ export default function HomeClient({ products }: HomeClientProps) {
     }));
   }, [filteredProducts]);
 
-  const heroProducts = products.slice(0, 2);
-  const heroProduct = heroProducts[0];
+  const spotlightProduct = heroProduct ?? products[0] ?? null;
+  const heroProducts = spotlightProduct ? [spotlightProduct] : [];
 
   return (
     <>
@@ -91,7 +109,7 @@ export default function HomeClient({ products }: HomeClientProps) {
   }
 />
 
-      {heroProduct ? (
+      {spotlightProduct ? (
         <section className="hero fade-up">
           <div className="hero-content">
             <span className="eyebrow">Special offer</span>
@@ -101,7 +119,7 @@ export default function HomeClient({ products }: HomeClientProps) {
               the season.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href={`/product/${heroProduct.id}`}>
+              <Link className="btn btn-primary" href={`/product/${spotlightProduct.id}`}>
                 Shop now
               </Link>
               <Link className="btn" href="/checkout">
@@ -123,7 +141,7 @@ export default function HomeClient({ products }: HomeClientProps) {
                 />
               ))}
             </div>
-            <div className="hero-price">{formatPrice(heroProduct.price)}</div>
+            <div className="hero-price">{formatPrice(spotlightProduct.price)}</div>
           </div>
         </section>
       ) : null}
@@ -135,16 +153,15 @@ export default function HomeClient({ products }: HomeClientProps) {
             View favourites
           </Link>
         </div>
-        <CategoryRow items={lines} />
+        <CategoryRow
+          items={linesWithAll}
+          activeId={activeLineId}
+          onSelect={setActiveLineId}
+        />
       </section>
 
       <section className="section fade-up" id="arrivals">
-        <div className="section-head">
-          <h2 className="section-title">Product hierarchy</h2>
-          <Link className="section-link" href="/cart">
-            Go to cart
-          </Link>
-        </div>
+
         {grouped.length ? (
           <div className="line-stack">
             {grouped.map((group) => (

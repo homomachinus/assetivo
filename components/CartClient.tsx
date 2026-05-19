@@ -3,28 +3,26 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { products, type Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
 import { getCartTotals } from "@/lib/catalog";
 import { readCartCookie, writeCartCookie, type CartItem } from "@/lib/cart-cookie";
 
 type CartLine = {
-  item: CartItem & { size: string; color: string };
+  item: CartItem;
   product: Product;
   lineTotal: number;
 };
 
-function buildLines(items: CartItem[]): CartLine[] {
+function buildLines(items: CartItem[], catalog: Product[]): CartLine[] {
   const lines: CartLine[] = [];
   for (const item of items) {
-    const product = products.find((entry) => entry.id === item.productId);
+    const product = catalog.find((entry) => entry.id === item.productId);
     if (!product) continue;
-    const size = item.size ?? product.sizes[0] ?? "One size";
-    const color = item.color ?? product.colors[0]?.name ?? "Default";
     lines.push({
-      item: { ...item, size, color },
+      item,
       product,
-      lineTotal: product.price * item.quantity,
+      lineTotal: product.price * item.quantity
     });
   }
   return lines;
@@ -32,13 +30,36 @@ function buildLines(items: CartItem[]): CartLine[] {
 
 export default function CartClient() {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [catalog, setCatalog] = useState<Product[]>([]);
 
   useEffect(() => {
     setItems(readCartCookie());
   }, []);
 
-  const lines = useMemo(() => buildLines(items), [items]);
+  useEffect(() => {
+    let active = true;
+
+    async function loadProducts() {
+      try {
+        const response = await fetch("/api/products");
+        const payload = await response.json();
+        if (active && payload?.data) {
+          setCatalog(payload.data as Product[]);
+        }
+      } catch {
+        // Ignore fetch errors for now.
+      }
+    }
+
+    loadProducts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const lines = useMemo(() => buildLines(items, catalog), [items, catalog]);
   const totals = useMemo(() => getCartTotals(lines), [lines]);
+  const isLoading = items.length > 0 && catalog.length === 0;
 
   function removeItem(productId: string) {
     const updated = items.filter((i) => i.productId !== productId);
@@ -55,7 +76,12 @@ export default function CartClient() {
         </Link>
       </div>
 
-      {lines.length ? (
+      {isLoading ? (
+        <div className="empty-state">
+          <strong>Loading cart...</strong>
+          <span>Syncing items from the database.</span>
+        </div>
+      ) : lines.length ? (
         <div className="cart-layout">
           <div>
             {lines.map((line) => (

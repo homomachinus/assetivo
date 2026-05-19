@@ -43,7 +43,7 @@ export function getCartLines(): CartLine[] {
     .filter((line): line is CartLine => Boolean(line));
 }
 
-export function getCartTotals(lines: CartLine[]) {
+export function getCartTotals(lines: Array<{ lineTotal: number }>) {
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0);
   const shipping = subtotal > 0 ? 0 : 0;
   const discount = subtotal > 900 ? 60 : 0;

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import Topbar from "@/components/Topbar";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 
 type FavouritesClientProps = {
   products: Product[];

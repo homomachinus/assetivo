@@ -451,15 +451,19 @@ border: none;
   color: var(--gold-dark);
 }
 
+.category-row-wrap {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 16px 8px 36px;
+}
+
+.category-row-wrap::-webkit-scrollbar {
+  height: 0;
+}
+
 .category-row {
   display: flex;
   gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-}
-
-.category-row::-webkit-scrollbar {
-  height: 0;
 }
 
 .category-pill {
@@ -1119,6 +1123,10 @@ border: none;
   display: grid;
   gap: 18px;
   text-align: center;
+}
+
+.category-icon {
+    display: none;
 }
 
 .success-icon {

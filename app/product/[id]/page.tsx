@@ -5,31 +5,23 @@ import AppShell from "@/components/AppShell";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductCard from "@/components/ProductCard";
 import Topbar from "@/components/Topbar";
-import { products } from "@/data/products";
 import { formatPrice } from "@/lib/format";
-import { getProductById, getRelatedProducts } from "@/lib/catalog";
+import { fetchProductById, fetchRelatedProducts } from "@/lib/products.server";
 
-export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
-}
+export const dynamic = "force-dynamic";
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const product = getProductById(params.id);
+  const product = await fetchProductById(params.id);
 
   if (!product) {
     notFound();
   }
 
-  const related = getRelatedProducts(
-    product.line,
-    product.category,
-    product.id,
-    4
-  );
+  const related = await fetchRelatedProducts(product, 4);
 
   return (
     <AppShell>
@@ -66,17 +58,6 @@ export default function ProductDetailPage({
               priority
               sizes="(max-width: 1100px) 100vw, 640px"
             />
-            <div className="thumb-row">
-              {product.colors.slice(0, 1).map((color) => (
-                <Image
-                  key={color.name}
-                  src={product.image}
-                  alt={`${product.name} in ${color.name}`}
-                  width={220}
-                  height={260}
-                />
-              ))}
-            </div>
           </div>
 
           <div className="product-detail">
@@ -88,7 +69,9 @@ export default function ProductDetailPage({
             <p className="product-description">{product.description}</p>
             <div className="price-row">
               <span className="price-now">{formatPrice(product.price)}</span>
-              <span className="price-was">{formatPrice(product.was)}</span>
+              {product.was ? (
+                <span className="price-was">{formatPrice(product.was)}</span>
+              ) : null}
             </div>
             <ProductDetailActions product={product} />
           </div>

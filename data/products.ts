@@ -1,19 +1,4 @@
-export type Product = {
-  id: string;
-  line: string;
-  name: string;
-  price: number;
-  was: number;
-  category: string;
-  variantType: string;
-  variantColor: string;
-  image: string;
-  description: string;
-  details: string[];
-  colors: { name: string; hex: string }[];
-  sizes: string[];
-  favourite: boolean;
-};
+import type { Product } from "@/lib/products";
 
 export const products: Product[] = [
   {
@@ -29,17 +14,6 @@ export const products: Product[] = [
       "/assets/cover/image3.png",
     description:
       "Classic oxford shirt with crisp lines and a soft, breathable weave.",
-    details: [
-      "100 percent cotton",
-      "Structured collar",
-      "Easy care finish"
-    ],
-    colors: [
-      { name: "Sand", hex: "#e6d5b8" },
-      { name: "Ink", hex: "#1f2937" },
-      { name: "Rose", hex: "#e7b3a8" }
-    ],
-    sizes: ["S", "M", "L", "XL"],
     favourite: false
   },
   {
@@ -55,16 +29,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Structured travel bag built for quick getaways and daily carry.",
-    details: [
-      "Water resistant canvas",
-      "Padded shoulder strap",
-      "Exterior zip pocket"
-    ],
-    colors: [
-      { name: "Black", hex: "#111827" },
-      { name: "Clay", hex: "#b08968" }
-    ],
-    sizes: ["One size"],
     favourite: false
   },
   {
@@ -80,16 +44,6 @@ export const products: Product[] = [
       "/assets/cover/image4.png",
     description:
       "Lightweight layering jacket with modern utility pockets.",
-    details: [
-      "Wind resistant shell",
-      "Hidden interior pocket",
-      "Soft brushed lining"
-    ],
-    colors: [
-      { name: "Olive", hex: "#6b705c" },
-      { name: "Stone", hex: "#d0c7c0" }
-    ],
-    sizes: ["S", "M", "L"],
     favourite: false
   },
   {
@@ -105,16 +59,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Tailored blazer with a sharp profile and clean lapels.",
-    details: [
-      "Slim silhouette",
-      "Breathable fabric blend",
-      "Internal media pocket"
-    ],
-    colors: [
-      { name: "Camel", hex: "#b08968" },
-      { name: "Midnight", hex: "#1f2937" }
-    ],
-    sizes: ["M", "L", "XL"],
     favourite: false
   },
   {
@@ -130,16 +74,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Minimal watch face with a brushed steel case and leather strap.",
-    details: [
-      "Japanese quartz movement",
-      "Sapphire coated glass",
-      "Genuine leather strap"
-    ],
-    colors: [
-      { name: "Tan", hex: "#c2a878" },
-      { name: "Black", hex: "#111827" }
-    ],
-    sizes: ["One size"],
     favourite: false
   },
   {
@@ -155,12 +89,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Soft jersey tee with a vintage wash and relaxed fit.",
-    details: ["Relaxed fit", "Pre-shrunk cotton", "Reinforced seams"],
-    colors: [
-      { name: "Bone", hex: "#f4f1ea" },
-      { name: "Charcoal", hex: "#4b5563" }
-    ],
-    sizes: ["S", "M", "L", "XL"],
     favourite: false
   },
   {
@@ -176,12 +104,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Vintage inspired denim jacket with contrast stitching.",
-    details: ["Stone wash denim", "Metal buttons", "Two chest pockets"],
-    colors: [
-      { name: "Indigo", hex: "#1e3a8a" },
-      { name: "Washed", hex: "#93c5fd" }
-    ],
-    sizes: ["M", "L", "XL"],
     favourite: false
   },
   {
@@ -197,12 +119,6 @@ export const products: Product[] = [
       "/assets/cover/image1.png",
     description:
       "Everyday sneakers with cushioned soles and canvas uppers.",
-    details: ["Rubber outsole", "Breathable canvas", "Comfort insole"],
-    colors: [
-      { name: "White", hex: "#f9fafb" },
-      { name: "Navy", hex: "#1e293b" }
-    ],
-    sizes: ["39", "40", "41", "42", "43"],
     favourite: false
   }
 ];

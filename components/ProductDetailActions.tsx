@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 import { addToCartCookie } from "@/lib/cart-cookie";
 
 type ProductDetailActionsProps = {
@@ -14,14 +14,11 @@ export default function ProductDetailActions({
   const router = useRouter();
 
   const handleAdd = (nextPath: string) => {
-    const size = product.sizes[0] ?? "One size";
-    const color = product.colors[0]?.name ?? "Default";
-
     addToCartCookie({
       productId: product.id,
       quantity: 1,
-      size,
-      color
+      variantType: product.variantType,
+      variantColor: product.variantColor
     });
 
     router.push(nextPath);

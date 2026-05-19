@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
 
 type ProductCardProps = {
@@ -31,7 +31,9 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         </p>
         <div className="price-row">
           <span className="price-now">{formatPrice(product.price)}</span>
-          <span className="price-was">{formatPrice(product.was)}</span>
+          {product.was ? (
+            <span className="price-was">{formatPrice(product.was)}</span>
+          ) : null}
         </div>
       </div>
     </Link>
