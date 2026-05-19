@@ -50,18 +50,8 @@ export default function DarkModeToggle({ variant = "icon" }: { variant?: "icon" 
   return (
     <button 
       onClick={toggleDark}
+      className="icon-btn"
       aria-label="Toggle dark mode"
-      style={{
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "inherit",
-        padding: "8px",
-        borderRadius: "50%",
-      }}
     >
       <span className="material-symbols-outlined" style={{ fontSize: 22 }}>
         {isDark ? "light_mode" : "dark_mode"}

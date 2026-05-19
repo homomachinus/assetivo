@@ -112,7 +112,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
         <div>
           <h2 style={{ fontSize: 20, margin: "0 0 4px" }}>{title}</h2>
           <p style={{ color: "var(--muted)", margin: 0, fontSize: 13 }}>
-            Manage your store's {entityName}s here.
+            Manage your store&apos;s {entityName}s here.
           </p>
         </div>
         <button className="btn btn-primary" onClick={handleOpenCreate}>

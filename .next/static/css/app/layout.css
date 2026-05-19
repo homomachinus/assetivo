@@ -24,19 +24,48 @@
   --gold: #f5c518;
   --gold-light: #42350a;
   --gold-dark: #fde047;
-  --ink: #f5f5f5;
-  --muted: #a3a3a3;
-  --canvas: #121212;
-  --surface: #1e1e1e;
-  --surface-muted: #2a2a2a;
-  --line: #333333;
-  --shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+  --ink: #f0ece6;
+  --muted: #9a9590;
+  --canvas: #111110;
+  --surface: #1c1b1a;
+  --surface-muted: #252423;
+  --line: #2e2d2b;
+  --shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  --media-bg: #252423;
+  --chip-bg: #252423;
+  --btn-fg: #f0ece6;
+  --btn-bg: #f0ece6;
+  --btn-bg-text: #111110;
+  --error-bg: #3b1c1c;
+  --error-border: #6b2b2b;
+  --error-text: #fca5a5;
+  --success-bg: #14362a;
+  --success-text: #86efac;
+  --warning-bg: #3b3010;
+  --warning-text: #fde047;
+  --hover-row: #252423;
+}
+
+:root:not(.dark) {
+  --media-bg: #f3f0ea;
+  --chip-bg: #f3f0ea;
+  --btn-fg: #ffffff;
+  --btn-bg: #1a1a1a;
+  --btn-bg-text: #ffffff;
+  --error-bg: #fff5f5;
+  --error-border: #fecaca;
+  --error-text: #c53030;
+  --success-bg: #dcfce7;
+  --success-text: #166534;
+  --warning-bg: #fef08a;
+  --warning-text: #854d0e;
+  --hover-row: #fafafa;
 }
 
 @font-face {
-    font-family: "Agrozza Demo";
-    src: url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.eot");
-    src: url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.eot?#iefix")format("embedded-opentype"),
+  font-family: "Agrozza Demo";
+  src: url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.eot");
+  src: url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.eot?#iefix")format("embedded-opentype"),
     url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.woff2")format("woff2"),
     url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.woff")format("woff"),
     url("https://db.onlinewebfonts.com/t/43b09078caf10c8e7d64754567ebc261.ttf")format("truetype"),
@@ -54,9 +83,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  background: radial-gradient(900px circle at 5% -10%, #fff7d6 0, transparent 60%),
-    radial-gradient(800px circle at 100% 0%, #ffe6a8 0, transparent 50%),
-    var(--canvas);
+  background: var(--canvas);
   font-family: var(--font-sans), "Segoe UI", sans-serif;
 }
 
@@ -64,8 +91,8 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.6), transparent 45%),
-    linear-gradient(120deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 60%);
+  background-image: radial-gradient(900px circle at 5% -10%, var(--gold-light) 0, transparent 60%),
+    radial-gradient(800px circle at 100% 0%, var(--gold-light) 0, transparent 50%);
   opacity: 0.35;
   pointer-events: none;
   z-index: 0;
@@ -116,7 +143,7 @@ p {
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
   border-right: 1px solid var(--line);
   padding: 28px 18px 24px;
   display: flex;
@@ -150,7 +177,7 @@ p {
   gap: 12px;
   padding: 10px 14px;
   border-radius: 14px;
-  color: #5f5f5f;
+  color: var(--muted);
   font-size: 14px;
   font-weight: 500;
   transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
@@ -214,7 +241,7 @@ p {
   left: 0;
   right: 0;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.95);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
   border-top: 1px solid var(--line);
   padding: 10px 16px;
   gap: 8px;
@@ -299,16 +326,21 @@ p {
 }
 
 .icon-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
-  background: #ffffff00;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--ink);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
 }
 
 .icon-btn:hover {
@@ -350,7 +382,7 @@ p {
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, var(--surface) 20%, transparent);
 }
 
 .hero::after {
@@ -374,8 +406,8 @@ p {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #fff;
-  background: #1a1a1a;
+  color: #ffffff;
+  background: #111110;
   padding: 6px 12px;
   border-radius: 999px;
   margin-bottom: 14px;
@@ -385,11 +417,12 @@ p {
   font-size: 26px;
   line-height: 1.1;
   margin: 0 0 14px;
+  color: #111110;
 }
 
 .hero-text {
   font-size: 14px;
-  color: #3b3b3b;
+  color: #2b2b2b;
   max-width: 360px;
   margin-bottom: 14px;
 }
@@ -398,6 +431,15 @@ p {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+  color: #111110;
+}
+
+.hero-actions .btn-primary {
+  background: #111110;
+  color: #ffffff;
 }
 
 .hero-figure {
@@ -420,15 +462,16 @@ p {
   height: auto;
   max-height: 240px;
   object-fit: contain;
-  background-color: rgba(255, 255, 255, 0.634);
+  background-color: color-mix(in srgb, var(--surface) 63%, transparent);
 }
 
 .homebtn-card {
-background-color: rgba(255, 0, 0, 0);
-border: none;
+  background-color: rgba(255, 0, 0, 0);
+  border: none;
 }
+
 .hero-title {
-    font-family: "Montserrat";
+  font-family: "Montserrat";
 }
 
 .hero-figure img {
@@ -440,7 +483,7 @@ border: none;
   position: absolute;
   bottom: -10px;
   right: 12px;
-  background: #1a1a1a;
+  background: var(--btn-bg);
   color: var(--gold);
   padding: 8px 12px;
   border-radius: 14px;
@@ -538,7 +581,7 @@ border: none;
   border: 1px dashed var(--line);
   border-radius: var(--radius-md);
   padding: 24px;
-  background: rgba(255, 255, 255, 0.7);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
   text-align: center;
   color: var(--muted);
 }
@@ -570,7 +613,7 @@ border: none;
 
 .product-media {
   position: relative;
-  background: #f3f0ea;
+  background: var(--media-bg);
   height: 220px;
 
   display: flex;
@@ -587,11 +630,12 @@ border: none;
 
   filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.25));
 }
+
 .card-tag {
   position: absolute;
   left: 14px;
   top: 14px;
-  background: #1a1a1a;
+  background: var(--btn-bg);
   color: var(--gold);
   font-size: 11px;
   font-weight: 700;
@@ -625,7 +669,7 @@ border: none;
 
 .product-info {
   padding: 14px 16px 18px;
-  background-color: #f3f0ea;
+  background-color: var(--media-bg);
 }
 
 .product-info h3 {
@@ -671,19 +715,19 @@ border: none;
 }
 
 .btn-primary {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
 }
 
 .btn-secondary {
   background: var(--gold);
-  color: #1a1a1a;
+  color: var(--btn-bg-text);
 }
 
 .btn-outline {
   background: transparent;
-  border-color: #dcd6c9;
-  color: #1a1a1a;
+  border-color: var(--line);
+  color: var(--ink);
 }
 
 .btn:hover {
@@ -722,7 +766,8 @@ border: none;
 
 .product-gallery img {
   border-radius: var(--radius-md);
-  object-fit: contain;  /* was cover — this was causing the crop */
+  object-fit: contain;
+  /* was cover — this was causing the crop */
   width: 100%;
   height: auto;
 }
@@ -866,7 +911,7 @@ border: none;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--surface);
   box-shadow: 0 0 0 1px var(--line);
 }
 
@@ -910,7 +955,7 @@ border: none;
 }
 
 .qty-chip {
-  background: #f3f0ea;
+  background: var(--media-bg);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 13px;
@@ -992,7 +1037,7 @@ border: none;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #d9d2c6;
+  background: var(--line);
 }
 
 .step.active {
@@ -1173,7 +1218,7 @@ border: none;
 }
 
 .category-icon {
-    display: none;
+  display: none;
 }
 
 .success-icon {
@@ -1196,6 +1241,7 @@ border: none;
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1265,8 +1311,8 @@ border: none;
   .search {
     min-width: 200px;
   }
-  
-    .product-grid {
+
+  .product-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1290,7 +1336,8 @@ border: none;
     margin-bottom: 20px;
     width: 100%;
   }
-    .topbar-actions--full {
+
+  .topbar-actions--full {
     width: 100%;
     margin-left: 0;
   }
@@ -1306,6 +1353,11 @@ border: none;
     flex: 1 1;
     min-width: 0;
     width: 100%;
+  }
+
+  .icon-btn svg {
+    width: 20px;
+    height: 20px;
   }
 
   .topbar-actions,
@@ -1379,8 +1431,15 @@ border: none;
 }
 
 @keyframes floatCircle {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(20px, -20px) scale(1.08); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(20px, -20px) scale(1.08);
+  }
 }
 
 /* Container */
@@ -1436,7 +1495,7 @@ border: none;
 /* Card */
 .admin-login-card {
   width: 100%;
-  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--line);
@@ -1521,7 +1580,7 @@ border: none;
   box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
 }
 
-.admin-input-wrap input:focus ~ .admin-input-icon,
+.admin-input-wrap input:focus~.admin-input-icon,
 .admin-input-wrap:focus-within .admin-input-icon {
   color: var(--gold-dark);
 }
@@ -1559,9 +1618,9 @@ border: none;
   gap: 8px;
   padding: 10px 14px;
   border-radius: var(--radius-sm);
-  background: #fff5f5;
-  border: 1px solid #fecaca;
-  color: #c53030;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
   font-size: 13px;
   font-weight: 500;
 }
@@ -1596,7 +1655,9 @@ border: none;
 }
 
 @keyframes adminSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Footer */
@@ -1928,7 +1989,7 @@ border: none;
 }
 
 .admin-table tr:hover td {
-  background-color: #fafafa;
+  background-color: var(--hover-row);
 }
 
 .admin-badge {
@@ -1942,18 +2003,18 @@ border: none;
 }
 
 .admin-badge.success {
-  background-color: #dcfce7;
-  color: #166534;
+  background-color: var(--success-bg);
+  color: var(--success-text);
 }
 
 .admin-badge.warning {
-  background-color: #fef08a;
-  color: #854d0e;
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
 }
 
 .admin-badge.error {
-  background-color: #fee2e2;
-  color: #991b1b;
+  background-color: var(--error-bg);
+  color: var(--error-text);
 }
 
 .admin-badge.neutral {

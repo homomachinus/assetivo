@@ -18,6 +18,7 @@ export default function AdminLinesPage() {
       key: "hero_image_url",
       label: "Hero Image",
       render: (item) => (
+        // eslint-disable-next-line @next/next/no-img-element
         <img 
           src={item.hero_image_url || "https://placehold.co/100x50"} 
           alt={item.name} 

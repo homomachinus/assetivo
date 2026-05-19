@@ -7,7 +7,7 @@ export default function AdminSettingsPage() {
         <div>
           <h2 style={{ fontSize: 24, margin: "0 0 8px" }}>Store Settings</h2>
           <p style={{ color: "var(--muted)", margin: 0, fontSize: 14 }}>
-            Manage your store's general configuration and preferences.
+            Manage your store&apos;s general configuration and preferences.
           </p>
         </div>
       </div>

@@ -17,6 +17,7 @@ export default function AdminCategoriesPage() {
       key: "image_url",
       label: "Image",
       render: (item) => (
+        // eslint-disable-next-line @next/next/no-img-element
         <img 
           src={item.image_url || "https://placehold.co/100x100"} 
           alt={item.name} 
