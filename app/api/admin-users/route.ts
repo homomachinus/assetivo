@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
+import { requireAdmin, isAuthError } from "@/lib/auth";
 import {
   requireString,
   optionalString,
@@ -13,6 +14,11 @@ import {
 // List all admin users. Supports ?active=true/false filter.
 export async function GET(request: Request) {
   try {
+    const auth = requireAdmin(request);
+    if (isAuthError(auth)) {
+      return NextResponse.json({ error: "hayoo mau liat apa" }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const active = searchParams.get("active");
 

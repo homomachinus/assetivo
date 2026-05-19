@@ -51,13 +51,7 @@ export default function AdminLoginClient() {
       <div className="admin-login-container fade-up">
         {/* Brand */}
         <div className="admin-login-brand">
-          <div className="admin-login-logo">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-          </div>
+
           <h1 className="admin-login-title">
             <span className="brand"><span>Assetivo</span></span>
           </h1>

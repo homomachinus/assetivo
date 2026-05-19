@@ -51,7 +51,7 @@ export default function AdminDashboardClient() {
     e.preventDefault();
     setPwError("");
     setPwSuccess("");
-    
+
     if (newPassword !== confirmPassword) {
       setPwError("New passwords do not match");
       return;
@@ -104,15 +104,8 @@ export default function AdminDashboardClient() {
     <div className="admin-login-page" style={{ alignItems: "flex-start", paddingTop: 60, paddingBottom: 60 }}>
       <div className="admin-login-container fade-up" style={{ maxWidth: 540 }}>
         <div className="admin-login-brand">
-          <div className="admin-login-logo">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-          </div>
           <h1 className="admin-login-title">
-            <span className="brand"><span>A</span>ssetivo</span>
+            <span className="brand"><span>Assetivo</span></span>
           </h1>
           <p className="admin-login-subtitle">Admin Dashboard</p>
         </div>
@@ -165,7 +158,7 @@ export default function AdminDashboardClient() {
                 {pwError}
               </div>
             )}
-            
+
             {pwSuccess && (
               <div className="admin-login-error fade-up" style={{ background: "#f0fdf4", borderColor: "#bbf7d0", color: "#166534" }}>
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
