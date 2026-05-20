@@ -68,19 +68,26 @@ export async function PUT(request: Request, { params }: RouteContext) {
     let lineId: string | undefined;
     let categoryId: string | undefined;
 
-    if (body?.lineId !== undefined) {
-      lineId = requireString(body.lineId, "lineId");
+    const bodyLineId = body?.line_id ?? body?.lineId;
+    if (bodyLineId !== undefined) {
+      lineId = requireString(bodyLineId, "line_id");
       updates.line_id = lineId;
     }
-    if (body?.categoryId !== undefined) {
-      categoryId = requireString(body.categoryId, "categoryId");
+
+    const bodyCategoryId = body?.category_id ?? body?.categoryId;
+    if (bodyCategoryId !== undefined) {
+      categoryId = requireString(bodyCategoryId, "category_id");
       updates.category_id = categoryId;
     }
-    if (body?.variantTypeId !== undefined) {
-      updates.variant_type_id = requireString(body.variantTypeId, "variantTypeId");
+
+    const bodyVariantTypeId = body?.variant_type_id ?? body?.variantTypeId;
+    if (bodyVariantTypeId !== undefined) {
+      updates.variant_type_id = typeof bodyVariantTypeId === "string" ? bodyVariantTypeId.trim() : "";
     }
-    if (body?.variantColorId !== undefined) {
-      updates.variant_color_id = requireString(body.variantColorId, "variantColorId");
+
+    const bodyVariantColorId = body?.variant_color_id ?? body?.variantColorId;
+    if (bodyVariantColorId !== undefined) {
+      updates.variant_color_id = typeof bodyVariantColorId === "string" ? bodyVariantColorId.trim() : "";
     }
 
     if (Object.keys(updates).length === 0) {
