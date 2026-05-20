@@ -14,29 +14,8 @@ type ProductLine = {
 
 export default function AdminLinesPage() {
   const columns: ColumnDef<ProductLine>[] = [
-    {
-      key: "hero_image_url",
-      label: "Hero Image",
-      render: (item) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img 
-          src={item.hero_image_url || "https://placehold.co/100x50"} 
-          alt={item.name} 
-          style={{ width: 80, height: 40, objectFit: "cover", borderRadius: 4, backgroundColor: "var(--line)" }} 
-        />
-      ),
-    },
     { key: "name", label: "Name" },
-    { key: "slug", label: "Slug" },
-    {
-      key: "is_active",
-      label: "Status",
-      render: (item) => (
-        <span className={`admin-badge ${item.is_active ? "success" : "neutral"}`}>
-          {item.is_active ? "Active" : "Inactive"}
-        </span>
-      ),
-    },
+
   ];
 
   const formFields: FormField[] = [

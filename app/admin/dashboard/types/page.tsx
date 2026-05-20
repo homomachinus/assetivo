@@ -24,15 +24,14 @@ export default function AdminTypesPage() {
 
   const columns: ColumnDef<VariantType>[] = [
     { key: "name", label: "Name" },
-    { key: "description", label: "Description" },
   ];
 
   const formFields: FormField[] = [
     { name: "name", label: "Type Name", type: "text", required: true, description: "e.g., Size, Material" },
-    { 
-      name: "category_id", 
-      label: "Category", 
-      type: "select", 
+    {
+      name: "category_id",
+      label: "Category",
+      type: "select",
       options: categories.map(c => ({ label: c.name, value: c.id })),
       required: true
     },
