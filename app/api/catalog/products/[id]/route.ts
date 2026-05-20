@@ -80,14 +80,18 @@ export async function PUT(request: Request, { params }: RouteContext) {
       updates.category_id = categoryId;
     }
 
+    const NIL_UUID = "00000000-0000-0000-0000-000000000000";
+
     const bodyVariantTypeId = body?.variant_type_id ?? body?.variantTypeId;
     if (bodyVariantTypeId !== undefined) {
-      updates.variant_type_id = typeof bodyVariantTypeId === "string" ? bodyVariantTypeId.trim() : "";
+      const raw = typeof bodyVariantTypeId === "string" ? bodyVariantTypeId.trim() : "";
+      updates.variant_type_id = raw || NIL_UUID;
     }
 
     const bodyVariantColorId = body?.variant_color_id ?? body?.variantColorId;
     if (bodyVariantColorId !== undefined) {
-      updates.variant_color_id = typeof bodyVariantColorId === "string" ? bodyVariantColorId.trim() : "";
+      const raw = typeof bodyVariantColorId === "string" ? bodyVariantColorId.trim() : "";
+      updates.variant_color_id = raw || NIL_UUID;
     }
 
     if (Object.keys(updates).length === 0) {
@@ -110,7 +114,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     }
 
     // Validate variant color if provided
-    if (updates.variant_color_id) {
+    if (updates.variant_color_id && updates.variant_color_id !== NIL_UUID) {
       const { data: colorRow } = await supabase
         .from("variant_colors")
         .select("id")
@@ -122,7 +126,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
     }
 
     // Validate variant type if provided
-    if (updates.variant_type_id) {
+    if (updates.variant_type_id && updates.variant_type_id !== NIL_UUID) {
       const { data: typeRow } = await supabase
         .from("variant_types")
         .select("id")

@@ -29,10 +29,11 @@ export async function POST(request: Request) {
     const lineId = requireString(lineIdRaw, "line_id");
     const categoryId = requireString(categoryIdRaw, "category_id");
     
+    const NIL_UUID = "00000000-0000-0000-0000-000000000000";
     const variantTypeIdRaw = body?.variant_type_id ?? body?.variantTypeId;
     const variantColorIdRaw = body?.variant_color_id ?? body?.variantColorId;
-    const variantTypeId = typeof variantTypeIdRaw === "string" ? variantTypeIdRaw.trim() : "";
-    const variantColorId = typeof variantColorIdRaw === "string" ? variantColorIdRaw.trim() : "";
+    const variantTypeId = typeof variantTypeIdRaw === "string" && variantTypeIdRaw.trim() ? variantTypeIdRaw.trim() : NIL_UUID;
+    const variantColorId = typeof variantColorIdRaw === "string" && variantColorIdRaw.trim() ? variantColorIdRaw.trim() : NIL_UUID;
 
     const title = requireString(body?.title, "title");
     const price = requireNumber(body?.price, "price");
@@ -64,7 +65,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "categoryId does not belong to lineId" }, { status: 400 });
     }
 
-    if (variantTypeId !== "") {
+    if (variantTypeId !== NIL_UUID) {
       const { data: typeRow, error: typeError } = await supabase
         .from("variant_types")
         .select("id,category_id")
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
       }
     }
 
-    if (variantColorId !== "") {
+    if (variantColorId !== NIL_UUID) {
       const { data: colorRow, error: colorError } = await supabase
         .from("variant_colors")
         .select("id")
