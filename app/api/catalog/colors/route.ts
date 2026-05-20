@@ -1,33 +1,34 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
+import {
+  requireString,
+  optionalString,
+  successResponse,
+  errorResponse,
+  catchError
+} from "@/lib/api-helpers";
 
-function requireString(value: unknown, field: string): string {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`${field} is required`);
-  }
-  return value.trim();
-}
-
+// ── POST /api/catalog/colors ────────────────────────────────────────
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const name = requireString(body?.name, "name");
+    const hexCode = optionalString(body?.hex_code ?? body?.hexCode);
 
     const supabase = getSupabaseServer();
     const { data, error } = await supabase
       .from("variant_colors")
-      .insert({ name })
-      .select("id,name")
+      .insert({ name, hex_code: hexCode })
+      .select("id,name,hex_code,created_at,updated_at")
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return errorResponse(error.message, 500);
     }
 
-    return NextResponse.json({ data });
+    return successResponse(data, 201);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Invalid request";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return catchError(error);
   }
 }
 
