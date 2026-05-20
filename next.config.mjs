@@ -5,16 +5,16 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com"
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.assetivo.store"
+      },
+      {
+        protocol: "https",
+        hostname: "*.r2.dev"
       }
     ]
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/",
-        destination: "/index.html"
-      }
-    ];
   }
 };
 

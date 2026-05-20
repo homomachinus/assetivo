@@ -2,28 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AppShell from "@/components/AppShell";
+import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductCard from "@/components/ProductCard";
 import Topbar from "@/components/Topbar";
-import { products } from "@/data/products";
 import { formatPrice } from "@/lib/format";
-import { getProductById, getRelatedProducts } from "@/lib/catalog";
+import { fetchProductById, fetchRelatedProducts } from "@/lib/products.server";
 
-export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
-}
+export const dynamic = "force-dynamic";
 
-export default function DevelProductDetailPage({
+export default async function DevelProductDetailPage({
   params
 }: {
   params: { id: string };
 }) {
-  const product = getProductById(params.id);
+  const product = await fetchProductById(params.id);
 
   if (!product) {
     notFound();
   }
 
-  const related = getRelatedProducts(product.category, product.id, 4);
+  const related = await fetchRelatedProducts(product, 4);
 
   return (
     <AppShell>
@@ -63,75 +61,22 @@ export default function DevelProductDetailPage({
               priority
               sizes="(max-width: 1100px) 100vw, 640px"
             />
-            <div className="thumb-row">
-              {product.colors.slice(0, 3).map((color) => (
-                <Image
-                  key={color.name}
-                  src={product.image}
-                  alt={`${product.name} in ${color.name}`}
-                  width={220}
-                  height={260}
-                />
-              ))}
-            </div>
           </div>
 
           <div className="product-detail">
-            <span className="pill">New arrival</span>
-            <h1>{product.name}</h1>
-            <p>{product.description}</p>
+            <h1 className="product-title">{product.name}</h1>
+            <p className="product-hierarchy">
+              {product.line} <span>›</span> {product.category} <span>›</span>{" "}
+              {product.variantType} / {product.variantColor}
+            </p>
+            <p className="product-description">{product.description}</p>
             <div className="price-row">
               <span className="price-now">{formatPrice(product.price)}</span>
-              <span className="price-was">{formatPrice(product.was)}</span>
+              {product.was ? (
+                <span className="price-was">{formatPrice(product.was)}</span>
+              ) : null}
             </div>
-
-            <div>
-              <p className="topbar-subtitle">Select size</p>
-              <div className="option-list">
-                {product.sizes.map((size, index) => (
-                  <span
-                    key={size}
-                    className={`size-pill${index === 1 ? " active" : ""}`}
-                  >
-                    {size}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <p className="topbar-subtitle">Choose color</p>
-              <div className="option-list">
-                {product.colors.map((color) => (
-                  <span
-                    key={color.name}
-                    className="swatch"
-                    style={{ background: color.hex }}
-                    title={color.name}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <p className="topbar-subtitle">Details</p>
-              <ul className="detail-list">
-                {product.details.map((detail) => (
-                  <li key={detail}>
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="action-row">
-              <Link className="btn btn-secondary" href="/devel/cart">
-                Add to cart
-              </Link>
-              <Link className="btn btn-primary" href="/devel/checkout">
-                Buy now
-              </Link>
-            </div>
+            <ProductDetailActions product={product} />
           </div>
         </div>
       </section>

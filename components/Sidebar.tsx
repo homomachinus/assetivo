@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   {
-    href: "/devel",
+    href: "/",
     label: "Home",
     badge: null,
     icon: (
@@ -21,13 +21,14 @@ const navItems = [
     )
   },
   {
-    href: "/devel/favourites",
-    label: "Favourites",
-    badge: "6",
+    href: "/explore",
+    label: "Explore",
+    badge: null,
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8" />
         <path
-          d="M12 20.5s-7-4.4-9.2-8.5C1.3 9.2 2.6 6 5.7 5.2c2.1-.6 4.3.2 5.7 1.8 1.4-1.6 3.6-2.4 5.7-1.8 3.1.8 4.4 4 2.9 6.8C19 16.1 12 20.5 12 20.5z"
+          d="M16.5 7.5l-3.5 5-5 3.5 3.5-5 5-3.5z"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.8"
@@ -37,9 +38,9 @@ const navItems = [
     )
   },
   {
-    href: "/devel/cart",
+    href: "/cart",
     label: "Cart",
-    badge: "3",
+    badge: "0",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -53,30 +54,6 @@ const navItems = [
         <circle cx="18" cy="20" r="1.5" fill="currentColor" />
       </svg>
     )
-  },
-  {
-    href: "/devel/account",
-    label: "Account",
-    badge: null,
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle
-          cx="12"
-          cy="8"
-          r="4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <path
-          d="M4 21a8 8 0 0 1 16 0"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    )
   }
 ];
 
@@ -84,7 +61,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const isActive = (href: string) =>
-    href === "/devel" ? pathname === "/devel" : pathname.startsWith(href);
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <>
@@ -103,7 +80,6 @@ export default function Sidebar() {
               >
                 {item.icon}
                 <span>{item.label}</span>
-                {item.badge ? <span className="nav-badge">{item.badge}</span> : null}
               </Link>
             );
           })}

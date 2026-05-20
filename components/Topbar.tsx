@@ -1,6 +1,7 @@
 "use client";
 
 import type { ChangeEvent, ReactNode } from "react";
+import DarkModeToggle from "./DarkModeToggle";
 
 type TopbarProps = {
   title: string;
@@ -29,13 +30,17 @@ export default function Topbar({
     ? { value: searchValue ?? "", onChange: handleSearchChange }
     : { defaultValue: searchValue ?? "" };
 
+  const hasTitle = title.trim().length > 0;
+
   return (
     <div className="topbar">
-      <div>
-        {subtitle ? <p className="topbar-subtitle">{subtitle}</p> : null}
-        <p className="topbar-title">{title}</p>
-      </div>
-      <div className="topbar-actions">
+      {hasTitle && (
+        <div className="topbar-text">
+          {subtitle ? <p className="topbar-subtitle">{subtitle}</p> : null}
+          <p className="topbar-title">{title}</p>
+        </div>
+      )}
+      <div className={`topbar-actions${!hasTitle ? " topbar-actions--full" : ""}`}>
         {showSearch ? (
           <label className="search">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -64,6 +69,7 @@ export default function Topbar({
           </label>
         ) : null}
         {actions}
+        <DarkModeToggle />
       </div>
     </div>
   );

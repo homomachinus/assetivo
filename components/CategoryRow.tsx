@@ -1,32 +1,49 @@
 "use client";
 
-const categories = [
-  { label: "Shirts", abbr: "SR" },
-  { label: "Pants", abbr: "PN" },
-  { label: "Caps", abbr: "CP" },
-  { label: "Bags", abbr: "BG" },
-  { label: "Shoes", abbr: "SN" },
-  { label: "Watches", abbr: "WT" },
-  { label: "Jackets", abbr: "JK" },
-  { label: "Accessories", abbr: "AC" }
-];
+export type CategoryRowItem = {
+  id: string;
+  label: string;
+};
 
-export default function CategoryRow() {
+type CategoryRowProps = {
+  items: CategoryRowItem[];
+  activeId?: string;
+  onSelect?: (id: string) => void;
+};
+
+function getAbbr(label: string) {
+  if (!label) {
+    return "--";
+  }
+  const parts = label.split(" ").filter(Boolean);
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+}
+
+export default function CategoryRow({ items, activeId, onSelect }: CategoryRowProps) {
   return (
-    <div className="category-row">
-      {categories.map((category, index) => (
-        <button
-          key={category.label}
-          type="button"
-          className={`category-pill${index === 0 ? " active" : ""}`}
-          aria-pressed={index === 0}
-        >
-          <span className="category-icon">
-            <span className="category-letter">{category.abbr}</span>
-          </span>
-          <span className="category-name">{category.label}</span>
-        </button>
-      ))}
+    <div className="category-row-wrap">
+      <div className="category-row">
+        {items.map((item) => {
+          const isActive = activeId ? activeId === item.id : false;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              className={`category-pill${isActive ? " active" : ""}`}
+              aria-pressed={isActive}
+              onClick={() => onSelect?.(item.id)}
+            >
+              <span className="category-icon">
+                <span className="category-letter">{getAbbr(item.label)}</span>
+              </span>
+              <span className="category-name">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
