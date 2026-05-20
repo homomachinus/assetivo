@@ -33,9 +33,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   return (
     <Link href={`/product/${product.id}`} className="product-card">
       <div className="product-media">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
+          fill
+          style={{ objectFit: "cover" }}
+          priority={priority}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
         />
       </div>
       <div className="product-info">
