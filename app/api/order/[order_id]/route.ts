@@ -171,23 +171,47 @@ export async function GET(_request: Request, { params }: RouteContext) {
       order.items || [];
     const productIds = items.map((i) => i.productId);
 
-    // 6. Fetch gdrive links from product_assets
+    // 6. Fetch gdrive links from product_assets (there may be multiple per product)
     const { data: assets } = await supabase
       .from("product_assets")
       .select("product_id, gdrive_link, notes")
       .in("product_id", productIds);
 
-    // 7. Build links per item
-    const links = items.map((item) => {
-      const asset = assets?.find((a) => a.product_id === item.productId);
-      return {
-        productId: item.productId,
-        title: item.title,
-        quantity: item.quantity,
-        gdrive_link: asset?.gdrive_link || null,
-        notes: asset?.notes || null,
-      };
-    });
+    // 7. Build links per item — include all assets for each product
+    const links: {
+      productId: string;
+      title: string;
+      quantity: number;
+      gdrive_link: string | null;
+      notes: string | null;
+    }[] = [];
+
+    for (const item of items) {
+      const itemAssets = (assets || []).filter(
+        (a) => a.product_id === item.productId
+      );
+
+      if (itemAssets.length === 0) {
+        // Still show the product even if no asset exists
+        links.push({
+          productId: item.productId,
+          title: item.title,
+          quantity: item.quantity,
+          gdrive_link: null,
+          notes: null,
+        });
+      } else {
+        for (const asset of itemAssets) {
+          links.push({
+            productId: item.productId,
+            title: item.title,
+            quantity: item.quantity,
+            gdrive_link: asset.gdrive_link || null,
+            notes: asset.notes || null,
+          });
+        }
+      }
+    }
 
     // 8. Mark link as claimed (one-time access)
     await supabase

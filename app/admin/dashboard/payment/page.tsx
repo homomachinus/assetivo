@@ -15,17 +15,17 @@ export default function PaymentGatewayPage() {
   const [activeId, setActiveId] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
 
+  const loadGateways = async () => {
+    const res = await fetch("/api/admin/payment-gateways");
+    const json = await res.json();
+    const data: Gateway[] = json.data || [];
+    setGateways(data);
+    const active = data.find((g) => g.is_active);
+    setActiveId(active ? active.id : null);
+  };
+
   useEffect(() => {
-    fetch("/api/admin/payment-gateways")
-      .then((res) => res.json())
-      .then((json) => {
-        const data: Gateway[] = json.data || [];
-        setGateways(data);
-        const active = data.find((g) => g.is_active);
-        if (active) setActiveId(active.id);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    loadGateways().finally(() => setLoading(false));
   }, []);
 
   const handleSave = async () => {
@@ -39,9 +39,8 @@ export default function PaymentGatewayPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed to save");
-      setGateways((prev) =>
-        prev.map((g) => ({ ...g, is_active: g.id === activeId }))
-      );
+      // Reload from DB to ensure UI matches reality
+      await loadGateways();
       setToast("Payment gateway updated successfully!");
       setTimeout(() => setToast(null), 3000);
     } catch (err) {
