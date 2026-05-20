@@ -29,6 +29,54 @@ function buildLines(items: CartItem[], catalog: Product[]): CartLine[] {
 export default function CheckoutClient() {
   const [items, setItems] = useState<CartItem[]>([]);
   const [catalog, setCatalog] = useState<Product[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    country: "Indonesia",
+    postal: ""
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (items.length === 0) return;
+    setIsSubmitting(true);
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: form,
+          items: items.map(item => ({ productId: item.productId, quantity: item.quantity }))
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || "Checkout failed");
+      }
+
+      if (json.data && json.data.redirect_url) {
+        // Redirect to Midtrans payment page
+        window.location.href = json.data.redirect_url;
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message);
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     setItems(readCartCookie());
@@ -61,7 +109,7 @@ export default function CheckoutClient() {
 
   return (
     <section className="section fade-up">
-      <div className="checkout-layout">
+      <form className="checkout-layout" onSubmit={handleCheckout}>
         <div className="form-stack">
           <div className="stepper">
             <div className="step active">
@@ -83,31 +131,31 @@ export default function CheckoutClient() {
             <div className="form-grid">
               <div className="field">
                 <label htmlFor="firstName">First name</label>
-                <input id="firstName" placeholder="Emon" />
+                <input id="firstName" value={form.firstName} onChange={handleInputChange} required placeholder="Emon" />
               </div>
               <div className="field">
                 <label htmlFor="lastName">Last name</label>
-                <input id="lastName" placeholder="Ahmed" />
+                <input id="lastName" value={form.lastName} onChange={handleInputChange} placeholder="Ahmed" />
               </div>
               <div className="field">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" placeholder="you@email.com" />
+                <input id="email" type="email" value={form.email} onChange={handleInputChange} required placeholder="you@email.com" />
               </div>
               <div className="field">
                 <label htmlFor="phone">Phone</label>
-                <input id="phone" placeholder="+62 812 3456 7890" />
+                <input id="phone" value={form.phone} onChange={handleInputChange} required placeholder="+62 812 3456 7890" />
               </div>
               <div className="field">
                 <label htmlFor="address">Street address</label>
-                <input id="address" placeholder="Jl. Sudirman No. 8" />
+                <input id="address" value={form.address} onChange={handleInputChange} placeholder="Jl. Sudirman No. 8" />
               </div>
               <div className="field">
                 <label htmlFor="city">City</label>
-                <input id="city" placeholder="Jakarta" />
+                <input id="city" value={form.city} onChange={handleInputChange} placeholder="Jakarta" />
               </div>
               <div className="field">
                 <label htmlFor="country">Country</label>
-                <select id="country">
+                <select id="country" value={form.country} onChange={handleInputChange}>
                   <option>Indonesia</option>
                   <option>Singapore</option>
                   <option>Malaysia</option>
@@ -115,53 +163,22 @@ export default function CheckoutClient() {
               </div>
               <div className="field">
                 <label htmlFor="postal">Postal code</label>
-                <input id="postal" placeholder="12190" />
+                <input id="postal" value={form.postal} onChange={handleInputChange} placeholder="12190" />
               </div>
             </div>
           </div>
 
-          <div className="form-card">
-            <h3>Payment method</h3>
-            <div className="radio-group">
-              <label className="radio-card">
-                <input type="radio" name="payment" defaultChecked />
-                Credit card
-              </label>
-              <label className="radio-card">
-                <input type="radio" name="payment" />
-                Bank transfer
-              </label>
-              <label className="radio-card">
-                <input type="radio" name="payment" />
-                E-wallet
-              </label>
+            {/* Payment method section removed since Midtrans will handle it */}
+            <div style={{ padding: "16px", background: "var(--surface-muted)", borderRadius: "var(--radius-md)", fontSize: 13, color: "var(--muted)" }}>
+              Payment will be processed securely via Midtrans after you place your order. You can choose to pay with Credit Card, Bank Transfer (Virtual Account), or E-Wallet.
             </div>
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="cardNumber">Card number</label>
-                <input id="cardNumber" placeholder="1234 5678 9012 3456" />
-              </div>
-              <div className="field">
-                <label htmlFor="cardName">Name on card</label>
-                <input id="cardName" placeholder="Emon Ahmed" />
-              </div>
-              <div className="field">
-                <label htmlFor="exp">Expiry</label>
-                <input id="exp" placeholder="06/28" />
-              </div>
-              <div className="field">
-                <label htmlFor="cvc">CVC</label>
-                <input id="cvc" placeholder="123" />
-              </div>
-            </div>
-          </div>
         </div>
 
         <aside className="summary-card">
           <h3>Order summary</h3>
           {isLoading ? (
             <div className="empty-state">
-              <strong>Loading cart...</strong>
+              <strong>Loading cart<span className="loading-dots"></span></strong>
               <span>Syncing items from the database.</span>
             </div>
           ) : lines.length ? (
@@ -192,9 +209,10 @@ export default function CheckoutClient() {
                 <span>Total</span>
                 <span>{formatPrice(totals.total)}</span>
               </div>
-              <Link className="btn btn-primary" href="/order-success">
-                Place order
-              </Link>
+              <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Processing..." : "Place order"}
+              </button>
+              {errorMsg && <p style={{ color: "var(--error-text)", fontSize: 13, marginTop: 8 }}>{errorMsg}</p>}
             </>
           ) : (
             <div className="empty-state">
@@ -203,7 +221,7 @@ export default function CheckoutClient() {
             </div>
           )}
         </aside>
-      </div>
+      </form>
     </section>
   );
 }

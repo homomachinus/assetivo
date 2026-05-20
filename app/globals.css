@@ -17,6 +17,17 @@
   --radius-sm: 12px;
 }
 
+.loading-dots::after {
+  content: ".";
+  animation: loadingDots 1.5s steps(4, end) infinite;
+}
+@keyframes loadingDots {
+  0%, 20% { content: ""; }
+  40% { content: "."; }
+  60% { content: ".."; }
+  80%, 100% { content: "..."; }
+}
+
 :root.dark {
   --gold: #f5c518;
   --gold-light: #42350a;

@@ -1,13 +1,5 @@
 {
   "/explore/page": "app/explore/page.js",
-  "/page": "app/page.js",
   "/product/[id]/page": "app/product/[id]/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/api/admin/login/route": "app/api/admin/login/route.js",
-  "/api/admin/me/route": "app/api/admin/me/route.js",
-  "/api/catalog/assets/route": "app/api/catalog/assets/route.js",
-  "/api/catalog/products/route": "app/api/catalog/products/route.js",
-  "/admin/dashboard/categories/page": "app/admin/dashboard/categories/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/dashboard/assets/page": "app/admin/dashboard/assets/page.js"
+  "/page": "app/page.js"
 }

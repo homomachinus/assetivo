@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CategoryRow, { type CategoryRowItem } from "@/components/CategoryRow";
 import ProductCard from "@/components/ProductCard";
+import LoadingImage from "@/components/LoadingImage";
 import Topbar from "@/components/Topbar";
 import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
@@ -142,15 +143,12 @@ export default function HomeClient({ products, heroProduct, lineItems }: HomeCli
           <div className="hero-figure">
             <div className="hero-preview">
               {heroProducts.map((product, index) => (
-                <Image
-                  key={product.id}
-                  src={product.image}
-                  alt={product.name}
-                  width={260}
-                  height={320}
-                  priority={index === 0}
-                  sizes="(max-width: 900px) 40vw, 220px"
-                />
+                <div key={product.id} style={{ position: "relative", width: 260, height: 320, borderRadius: "var(--radius-md)", overflow: "hidden" }}>
+                  <LoadingImage
+                    src={product.image}
+                    alt={product.name}
+                  />
+                </div>
               ))}
             </div>
             <div className="hero-price">{formatPrice(spotlightProduct.price)}</div>
