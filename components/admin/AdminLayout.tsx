@@ -20,6 +20,7 @@ const MENU_ITEMS = [
   { label: "Product Lines", href: "/admin/dashboard/lines", icon: "layers" },
   { label: "Variant Types", href: "/admin/dashboard/types", icon: "style" },
   { label: "Variant Colors", href: "/admin/dashboard/colors", icon: "palette" },
+  { label: "Payment Gateway", href: "/admin/dashboard/payment", icon: "payments" },
   { label: "Product Assets", href: "/admin/dashboard/assets", icon: "folder_open" },
   { label: "Admin Users", href: "/admin/dashboard/users", icon: "group" },
   { label: "Orders", href: "/admin/dashboard/orders", icon: "shopping_cart" },

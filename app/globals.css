@@ -1929,6 +1929,63 @@ p {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
+.admin-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  transition: border-color 0.15s ease;
+}
+
+.admin-search-bar:focus-within {
+  border-color: var(--gold-dark);
+}
+
+.admin-search-icon {
+  font-size: 18px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.admin-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--ink);
+  outline: none;
+  min-width: 0;
+}
+
+.admin-search-input::placeholder {
+  color: var(--muted);
+}
+
+.admin-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.admin-search-clear:hover {
+  background: var(--gold-dark);
+  color: #fff;
+}
+
 .admin-table-container {
   overflow-x: auto;
   margin-top: 16px;
@@ -2247,4 +2304,285 @@ p {
     justify-content: center;
     text-align: center;
   }
-}
+}
+
+/* ── Payment Gateway Admin Page ──────────────────────────────────── */
+.pg-settings {
+  max-width: 560px;
+}
+
+.pg-toast {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--error-bg, #fef2f2);
+  border: 1px solid var(--error-border, #fecaca);
+  color: var(--error-text, #b91c1c);
+}
+
+.pg-toast[data-success="true"] {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.pg-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+}
+
+.pg-card-header {
+  display: grid;
+  gap: 6px;
+}
+
+.pg-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pg-card-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.pg-options {
+  display: grid;
+  gap: 10px;
+}
+
+.pg-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pg-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold-dark);
+  flex-shrink: 0;
+}
+
+.pg-option.selected {
+  border-color: var(--gold-dark);
+  background: var(--gold-light, #fefce8);
+}
+
+.pg-option-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.pg-option-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pg-option-badge {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.pg-option-check {
+  font-size: 16px;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.pg-env-hint {
+  background: var(--surface-muted);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.pg-env-hint strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.pg-env-hint ul {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 4px;
+}
+
+.pg-env-hint code {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+/* ── Order Success Page ──────────────────────────────────────────── */
+.os-card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  text-align: center;
+  display: grid;
+  gap: 16px;
+}
+
+.os-card h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.os-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.os-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.os-icon--success {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.os-icon--pending {
+  background: var(--gold-light, #fef9c3);
+  color: #a16207;
+}
+
+.os-icon--expired {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.os-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.os-warning svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.os-links {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.os-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.os-link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.os-link-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.os-link-notes {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.os-download-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 8px 16px;
+}
+
+.os-no-link {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Dark mode adjustments for order success */
+[data-theme="dark"] .os-warning {
+  background: rgba(254, 243, 199, 0.1);
+  border-color: rgba(252, 211, 77, 0.3);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .os-icon--success {
+  background: rgba(22, 163, 74, 0.15);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .os-icon--pending {
+  background: rgba(161, 98, 7, 0.15);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .os-icon--expired {
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+}
+

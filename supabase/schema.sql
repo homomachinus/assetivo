@@ -52,6 +52,20 @@ create table if not exists public.products (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.payment_gateways (
+  id integer primary key,
+  name text not null,
+  is_active boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+-- Insert default gateways if not exists
+insert into public.payment_gateways (id, name, is_active)
+values 
+  (0, 'Midtrans', true),
+  (1, 'Paymenku', false)
+on conflict (id) do nothing;
+
 create table if not exists public.home_collections (
   id uuid primary key default gen_random_uuid(),
   product_id uuid not null references public.products(id) on delete cascade,
@@ -83,6 +97,7 @@ create table if not exists public.payment_history (
   reference text,
   items jsonb,
   metadata jsonb,
+  link_claimed boolean not null default false,
   paid_at timestamptz,
   created_at timestamptz not null default now()
 );
@@ -150,6 +165,10 @@ create trigger set_admin_users_updated_at
 before update on public.admin_users
 for each row execute function public.set_updated_at();
 
+create trigger set_payment_gateways_updated_at
+before update on public.payment_gateways
+for each row execute function public.set_updated_at();
+
 alter table public.product_lines enable row level security;
 alter table public.product_categories enable row level security;
 alter table public.variant_types enable row level security;
@@ -158,6 +177,7 @@ alter table public.products enable row level security;
 alter table public.home_collections enable row level security;
 alter table public.admin_users enable row level security;
 alter table public.payment_history enable row level security;
+alter table public.payment_gateways enable row level security;
 
 create policy "public read product lines"
   on public.product_lines for select
@@ -189,4 +209,8 @@ create policy "public insert payment history"
 
 create policy "public read payment history"
   on public.payment_history for select
+  using (true);
+
+create policy "public read payment gateways"
+  on public.payment_gateways for select
   using (true);

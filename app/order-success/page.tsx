@@ -1,37 +1,22 @@
-import Link from "next/link";
+import { Suspense } from "react";
 import AppShell from "@/components/AppShell";
 import Topbar from "@/components/Topbar";
+import OrderSuccessClient from "@/components/OrderSuccessClient";
 
 export default function OrderSuccessPage() {
   return (
     <AppShell>
-      <Topbar title="Order confirmed" subtitle="Thank you for your purchase" />
-      <section className="section fade-up">
-        <div className="success-card">
-          <div className="success-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
-              <path
-                d="M5 13l4 4L19 7"
-                fill="none"
-                stroke="#1a1a1a"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+      <Topbar title="Order Berhasil" subtitle="Detail pesanan Anda" />
+      <Suspense fallback={
+        <section className="section fade-up">
+          <div className="os-card">
+            <div className="admin-spinner" style={{ width: 32, height: 32, margin: "0 auto" }} />
+            <p style={{ textAlign: "center", color: "var(--muted)", fontSize: 13 }}>Memuat...</p>
           </div>
-          <h2>Payment received</h2>
-          <p>Your order ASV-312 has been confirmed and is being prepared.</p>
-          <div className="hero-actions">
-            <Link className="btn btn-secondary" href="/">
-              Continue shopping
-            </Link>
-            <Link className="btn btn-outline" href="/account">
-              View order
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      }>
+        <OrderSuccessClient />
+      </Suspense>
     </AppShell>
   );
 }

@@ -63,7 +63,7 @@ export default function CheckoutClient() {
       }
 
       if (json.data && json.data.redirect_url) {
-        // Redirect to Midtrans payment page
+        // Redirect to payment page (Midtrans Snap or Paymenku pay_url)
         window.location.href = json.data.redirect_url;
       }
     } catch (err: any) {
@@ -134,9 +134,8 @@ export default function CheckoutClient() {
             </div>
           </div>
 
-            {/* Payment method section removed since Midtrans will handle it */}
             <div style={{ padding: "16px", background: "var(--surface-muted)", borderRadius: "var(--radius-md)", fontSize: 13, color: "var(--muted)" }}>
-              Payment will be processed securely via Midtrans after you place your order. You can choose to pay with Credit Card, Bank Transfer (Virtual Account), or E-Wallet.
+              Pembayaran diproses secara aman via payment gateway aktif. Anda akan diarahkan ke halaman pembayaran setelah klik tombol di bawah.
             </div>
         </div>
 

@@ -29,6 +29,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<T | null>(null);
@@ -109,15 +110,32 @@ export default function AdminDataTable<T extends Record<string, any>>({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const totalPages = Math.ceil(data.length / pageSize) || 1;
-  const paginatedData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  // Client-side search: filter across all visible columns
+  const filteredData = searchQuery.trim()
+    ? data.filter((item) => {
+        const q = searchQuery.toLowerCase();
+        return columns.some((col) => {
+          const val = item[col.key as keyof T];
+          if (val === null || val === undefined) return false;
+          return String(val).toLowerCase().includes(q);
+        });
+      })
+    : data;
+
+  const totalPages = Math.ceil(filteredData.length / pageSize) || 1;
+  const paginatedData = filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   useEffect(() => {
     // Reset to page 1 if data shrinks below current page
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
-  }, [data.length, totalPages, currentPage]);
+  }, [filteredData.length, totalPages, currentPage]);
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   return (
     <div className="admin-card fade-up">
@@ -132,6 +150,28 @@ export default function AdminDataTable<T extends Record<string, any>>({
           <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span>
           Add {entityName}
         </button>
+      </div>
+
+      {/* Search */}
+      <div className="admin-search-bar">
+        <span className="material-symbols-outlined admin-search-icon">search</span>
+        <input
+          type="text"
+          placeholder={`Search ${entityName}s...`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="admin-search-input"
+        />
+        {searchQuery && (
+          <button
+            className="admin-search-clear"
+            onClick={() => setSearchQuery("")}
+            type="button"
+            aria-label="Clear search"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
+          </button>
+        )}
       </div>
 
       {error && (
@@ -157,10 +197,10 @@ export default function AdminDataTable<T extends Record<string, any>>({
                   <div className="admin-spinner" style={{ width: 24, height: 24, borderTopColor: "var(--gold-dark)" }} />
                 </td>
               </tr>
-            ) : data.length === 0 ? (
+            ) : filteredData.length === 0 ? (
               <tr>
                 <td colSpan={columns.length + 1} style={{ textAlign: "center", padding: 40, color: "var(--muted)" }}>
-                  No {entityName}s found.
+                  {searchQuery ? `No ${entityName}s matching "${searchQuery}".` : `No ${entityName}s found.`}
                 </td>
               </tr>
             ) : (
@@ -188,11 +228,11 @@ export default function AdminDataTable<T extends Record<string, any>>({
         </table>
       </div>
 
-      {data.length > 0 && (
+      {filteredData.length > 0 && (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--line)', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>
-              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, data.length)} of {data.length} entries
+              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, filteredData.length)} of {filteredData.length}{searchQuery ? ` (filtered from ${data.length})` : ''} entries
             </span>
             <select 
               value={pageSize} 

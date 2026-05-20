@@ -4,8 +4,18 @@ import {
   requireString,
   successResponse,
   errorResponse,
-  catchError
+  catchError,
 } from "@/lib/api-helpers";
+
+async function getActiveGatewayId(): Promise<number> {
+  const supabase = getSupabaseServer();
+  const { data } = await supabase
+    .from("payment_gateways")
+    .select("id")
+    .eq("is_active", true)
+    .single();
+  return data?.id ?? 0; // default to Midtrans
+}
 
 export async function POST(request: Request) {
   try {
@@ -33,8 +43,8 @@ export async function POST(request: Request) {
     }
 
     let grossAmount = 0;
-    const midtransItems = [];
-    const orderItems = []; // To save in payment_history
+    const lineItems = [];
+    const orderItems = [];
 
     for (const item of items) {
       const product = dbProducts.find((p) => p.id === item.productId);
@@ -47,9 +57,9 @@ export async function POST(request: Request) {
       const lineTotal = price * qty;
       grossAmount += lineTotal;
 
-      midtransItems.push({
+      lineItems.push({
         id: product.id,
-        price: price,
+        price,
         quantity: qty,
         name: product.title.substring(0, 50),
       });
@@ -58,16 +68,21 @@ export async function POST(request: Request) {
         productId: product.id,
         title: product.title,
         quantity: qty,
-        price: price,
+        price,
       });
     }
 
     // Generate Order ID
     const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
     const orderId = `ORD-${timestamp}-${random}`;
 
-    // 2. Insert into payment_history as pending
+    // 2. Determine active gateway
+    const gatewayId = await getActiveGatewayId();
+
+    // 3. Insert into payment_history as pending
     const { error: insertError } = await supabase
       .from("payment_history")
       .insert({
@@ -75,7 +90,7 @@ export async function POST(request: Request) {
         amount: grossAmount,
         currency: "IDR",
         status: "pending",
-        provider: "midtrans",
+        provider: gatewayId === 1 ? "paymenku" : "midtrans",
         items: orderItems,
         metadata: { customer },
       });
@@ -84,32 +99,94 @@ export async function POST(request: Request) {
       return errorResponse(insertError.message, 500);
     }
 
-    // 3. Create Midtrans Transaction
-    const transactionDetails = {
-      transaction_details: {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+    // ── MIDTRANS ──────────────────────────────────────────────────────
+    if (gatewayId === 0) {
+      const transactionDetails = {
+        transaction_details: {
+          order_id: orderId,
+          gross_amount: grossAmount,
+        },
+        item_details: lineItems,
+        customer_details: {
+          first_name: name,
+          last_name: "",
+          phone,
+        },
+        callbacks: {
+          finish: `${baseUrl}/order-success?order_id=${orderId}`,
+          error: `${baseUrl}/cart`,
+          pending: `${baseUrl}/order-success?order_id=${orderId}`,
+        },
+      };
+
+      const transaction = await snap.createTransaction(transactionDetails);
+      return successResponse({
+        redirect_url: transaction.redirect_url,
+        token: transaction.token,
         order_id: orderId,
-        gross_amount: grossAmount,
-      },
-      item_details: midtransItems,
-      customer_details: {
-        first_name: name,
-        last_name: "",
-        phone: phone,
-      },
-      callbacks: {
-        // Redirection after payment on Midtrans hosted page
-        finish: `${process.env.R2_PUBLIC_URL || "http://localhost:3000"}/order-success?order_id=${orderId}`,
-        error: `${process.env.R2_PUBLIC_URL || "http://localhost:3000"}/cart`,
-        pending: `${process.env.R2_PUBLIC_URL || "http://localhost:3000"}/order-success?order_id=${orderId}`,
-      },
-    };
+        gateway: "midtrans",
+      });
+    }
 
-    const transaction = await snap.createTransaction(transactionDetails);
+    // ── PAYMENKU (QRIS) ───────────────────────────────────────────────
+    if (gatewayId === 1) {
+      const apiKey = process.env.PAYMENKU_API_KEY;
+      if (!apiKey) {
+        return errorResponse("PAYMENKU_API_KEY is not configured", 500);
+      }
 
-    return successResponse({
-      redirect_url: transaction.redirect_url,
-      token: transaction.token,
-    });
+      const payload = {
+        reference_id: orderId,
+        amount: grossAmount,
+        customer_name: name,
+        customer_email: "noreply@assetivo.com", // email placeholder (required by API)
+        customer_phone: phone,
+        channel_code: "qris",
+        return_url: `${baseUrl}/order-success?order_id=${orderId}`,
+      };
+
+      const pmRes = await fetch(
+        "https://paymenku.com/api/v1/transaction/create",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const pmJson = await pmRes.json();
+
+      if (!pmRes.ok || pmJson.status !== "success") {
+        console.error("[checkout] Paymenku error:", pmJson);
+        return errorResponse(
+          pmJson?.message || "Failed to create Paymenku transaction",
+          500
+        );
+      }
+
+      const payUrl: string = pmJson.data?.pay_url;
+      const trxId: string = pmJson.data?.trx_id;
+
+      // Update metadata with Paymenku trx_id
+      await supabase
+        .from("payment_history")
+        .update({ metadata: { customer, paymenku_trx_id: trxId } })
+        .eq("order_id", orderId);
+
+      return successResponse({
+        redirect_url: payUrl,
+        order_id: orderId,
+        gateway: "paymenku",
+      });
+    }
+
+    return errorResponse("Unknown payment gateway", 500);
   } catch (error) {
     return catchError(error);
   }
