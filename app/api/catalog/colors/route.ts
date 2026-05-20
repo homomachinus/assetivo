@@ -13,13 +13,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const name = requireString(body?.name, "name");
-    const hexCode = optionalString(body?.hex_code ?? body?.hexCode);
 
     const supabase = getSupabaseServer();
     const { data, error } = await supabase
       .from("variant_colors")
-      .insert({ name, hex_code: hexCode })
-      .select("id,name,hex_code,created_at,updated_at")
+      .insert({ name })
+      .select("id,name,created_at,updated_at")
       .single();
 
     if (error) {

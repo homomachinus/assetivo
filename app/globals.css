@@ -531,6 +531,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   min-width: 72px;
   cursor: pointer;
@@ -2241,5 +2242,9 @@ p {
 
   .explore-filter-chip {
     padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 }

@@ -17,7 +17,7 @@ export async function GET(_request: Request, { params }: RouteContext) {
     const supabase = getSupabaseServer();
     const { data, error } = await supabase
       .from("variant_colors")
-      .select("id,name,hex_code,created_at,updated_at")
+      .select("id,name,created_at,updated_at")
       .eq("id", id)
       .single();
 
@@ -42,9 +42,6 @@ export async function PUT(request: Request, { params }: RouteContext) {
     if (body?.name !== undefined) {
       updates.name = requireString(body.name, "name");
     }
-    if (body?.hex_code !== undefined) {
-      updates.hex_code = optionalString(body.hex_code);
-    }
 
     if (Object.keys(updates).length === 0) {
       return errorResponse("No fields to update");
@@ -55,7 +52,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
       .from("variant_colors")
       .update(updates)
       .eq("id", id)
-      .select("id,name,hex_code,created_at,updated_at")
+      .select("id,name,created_at,updated_at")
       .single();
 
     if (error) {
