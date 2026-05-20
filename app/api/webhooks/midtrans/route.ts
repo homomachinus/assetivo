@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Optional but recommended: Verify via CoreAPI to be absolutely sure
-    const statusResponse = await coreApi.transaction.status(orderId);
+    const statusResponse = await (coreApi as any).transaction.status(orderId);
     if (statusResponse.signature_key !== payload.signature_key) {
       return NextResponse.json({ error: "Validation failed" }, { status: 403 });
     }
