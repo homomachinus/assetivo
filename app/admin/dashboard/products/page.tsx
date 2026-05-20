@@ -18,7 +18,7 @@ type Product = {
 };
 
 export default function AdminProductsPage() {
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; line_id: string }[]>([]);
   const [lines, setLines] = useState<{ id: string; name: string }[]>([]);
   const [types, setTypes] = useState<{ id: string; name: string }[]>([]);
   const [colors, setColors] = useState<{ id: string; name: string }[]>([]);
@@ -75,8 +75,9 @@ export default function AdminProductsPage() {
       name: "category_id", 
       label: "Category", 
       type: "select", 
-      options: categories.map(c => ({ label: c.name, value: c.id })),
-      required: true 
+      options: categories.map(c => ({ label: c.name, value: c.id, filterByValue: c.line_id })),
+      required: true,
+      dependsOn: "line_id",
     },
     { 
       name: "variant_type_id", 

@@ -9,9 +9,12 @@ export type FormField = {
   label: string;
   type: FormFieldType;
   required?: boolean;
-  options?: { label: string; value: string | number }[]; // For select
+  /** For select fields: the available options. Each option may carry an optional `filterByValue` used with `dependsOn`. */
+  options?: { label: string; value: string | number; filterByValue?: string }[];
   placeholder?: string;
   description?: string;
+  /** Name of another form field this select depends on (for cascading selects). */
+  dependsOn?: string;
 };
 
 type AdminFormModalProps = {
@@ -54,14 +57,19 @@ export default function AdminFormModal({
       
       // Auto-fill slug if name or title changes
       if ((name === "name" || name === "title") && fields.some((f) => f.name === "slug")) {
-        // Only autofill if it's a new item (no initialData ID) or we want to force it
-        // Actually, let's just always autofill for convenience if the user types
         const slugified = (value || "")
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-+|-+$/g, "");
         next.slug = slugified;
       }
+
+      // Reset any fields that depend on this one (cascading selects)
+      fields.forEach((f) => {
+        if (f.dependsOn === name) {
+          next[f.name] = "";
+        }
+      });
       
       return next;
     });
@@ -184,7 +192,13 @@ export default function AdminFormModal({
                         style={{ padding: "0 12px", width: "100%", height: "100%", border: "none", outline: "none", background: "transparent", appearance: "none" }}
                       >
                         <option value="" disabled>Select {field.label}</option>
-                        {field.options?.map((opt) => (
+                        {/* Filter options by parent field value when dependsOn is set */}
+                        {(field.dependsOn
+                          ? (field.options ?? []).filter((opt) =>
+                              !opt.filterByValue || opt.filterByValue === String(formData[field.dependsOn!] ?? "")
+                            )
+                          : (field.options ?? [])
+                        ).map((opt) => (
                           <option key={String(opt.value)} value={opt.value}>
                             {opt.label}
                           </option>
