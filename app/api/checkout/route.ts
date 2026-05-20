@@ -16,8 +16,7 @@ export async function POST(request: Request) {
       return errorResponse("Cart is empty", 400);
     }
 
-    const firstName = requireString(customer?.firstName, "First name");
-    const email = requireString(customer?.email, "Email");
+    const name = requireString(customer?.name, "Name");
     const phone = requireString(customer?.phone, "Phone");
 
     const supabase = getSupabaseServer();
@@ -93,9 +92,8 @@ export async function POST(request: Request) {
       },
       item_details: midtransItems,
       customer_details: {
-        first_name: firstName,
-        last_name: customer?.lastName || "",
-        email: email,
+        first_name: name,
+        last_name: "",
         phone: phone,
       },
       callbacks: {

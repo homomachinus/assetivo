@@ -33,9 +33,7 @@ export default function CheckoutClient() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    name: "",
     phone: "",
   });
 
@@ -126,16 +124,8 @@ export default function CheckoutClient() {
             <h3>Customer details</h3>
             <div className="form-grid">
               <div className="field">
-                <label htmlFor="firstName">First name</label>
-                <input id="firstName" value={form.firstName} onChange={handleInputChange} required placeholder="Emon" />
-              </div>
-              <div className="field">
-                <label htmlFor="lastName">Last name</label>
-                <input id="lastName" value={form.lastName} onChange={handleInputChange} placeholder="Ahmed" />
-              </div>
-              <div className="field">
-                <label htmlFor="email">Email</label>
-                <input id="email" type="email" value={form.email} onChange={handleInputChange} required placeholder="you@email.com" />
+                <label htmlFor="name">Name</label>
+                <input id="name" value={form.name} onChange={handleInputChange} required placeholder="Emon Ahmed" />
               </div>
               <div className="field">
                 <label htmlFor="phone">Phone</label>
