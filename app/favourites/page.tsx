@@ -1,15 +1,5 @@
-import AppShell from "@/components/AppShell";
-import FavouritesClient from "@/components/FavouritesClient";
-import { fetchProducts } from "@/lib/products.server";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function FavouritesPage() {
-  const products = await fetchProducts();
-
-  return (
-    <AppShell>
-      <FavouritesClient products={products} />
-    </AppShell>
-  );
+export default function FavouritesPage() {
+  redirect("/explore");
 }

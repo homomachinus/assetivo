@@ -2131,6 +2131,157 @@ p {
   gap: 12px;
   background-color: var(--surface-muted);
 }
+
+/* ── Explore Page ──────────────────────────────────────────────── */
+.explore-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-gap: 28px;
+  gap: 28px;
+  align-items: start;
+}
+
+.explore-filters {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: grid;
+  grid-gap: 20px;
+  gap: 20px;
+}
+
+.explore-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.explore-filters-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.explore-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-dark);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.explore-clear-btn:hover {
+  opacity: 0.75;
+}
+
+.explore-filter-badge {
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explore-filter-group {
+  display: grid;
+  grid-gap: 10px;
+  gap: 10px;
+}
+
+.explore-filter-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.explore-filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.explore-filter-chip {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.explore-filter-chip:hover {
+  background: var(--surface-muted);
+  color: var(--ink);
+}
+
+.explore-filter-chip.active {
+  background: var(--gold-light);
+  border-color: var(--gold-dark);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.explore-results {
+  display: grid;
+  grid-gap: 20px;
+  gap: 20px;
+}
+
+.explore-results-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.explore-count {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 860px) {
+  .explore-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-filters {
+    position: static;
+  }
+
+  .explore-filter-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .explore-filter-chip {
+    padding: 6px 12px;
+  }
+}
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[13].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"app\\layout.tsx","import":"DM_Sans","arguments":[{"subsets":["latin"],"weight":["300","400","500","600","700"],"variable":"--font-sans"}],"variableName":"dmSans"} ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
