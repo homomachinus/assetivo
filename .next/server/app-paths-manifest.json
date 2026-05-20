@@ -1,8 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/api/catalog/products/[id]/route": "app/api/catalog/products/[id]/route.js",
-  "/api/catalog/products/route": "app/api/catalog/products/route.js",
-  "/admin/dashboard/colors/page": "app/admin/dashboard/colors/page.js",
-  "/admin/dashboard/products/page": "app/admin/dashboard/products/page.js"
-}
+{}

@@ -20,7 +20,7 @@ type Product = {
 export default function AdminProductsPage() {
   const [categories, setCategories] = useState<{ id: string; name: string; line_id: string }[]>([]);
   const [lines, setLines] = useState<{ id: string; name: string }[]>([]);
-  const [types, setTypes] = useState<{ id: string; name: string }[]>([]);
+  const [types, setTypes] = useState<{ id: string; name: string; category_id: string }[]>([]);
   const [colors, setColors] = useState<{ id: string; name: string }[]>([]);
 
   useEffect(() => {
@@ -83,7 +83,8 @@ export default function AdminProductsPage() {
       name: "variant_type_id", 
       label: "Variant Type", 
       type: "select", 
-      options: types.map(c => ({ label: c.name, value: c.id }))
+      options: types.map(c => ({ label: c.name, value: c.id, filterByValue: c.category_id })),
+      dependsOn: "category_id",
     },
     { 
       name: "variant_color_id", 
