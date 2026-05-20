@@ -37,10 +37,6 @@ export default function CheckoutClient() {
     lastName: "",
     email: "",
     phone: "",
-    address: "",
-    city: "",
-    country: "Indonesia",
-    postal: ""
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -114,7 +110,7 @@ export default function CheckoutClient() {
           <div className="stepper">
             <div className="step active">
               <span className="dot" />
-              Shipping
+              Customer Info
             </div>
             <div className="step active">
               <span className="dot" />
@@ -127,7 +123,7 @@ export default function CheckoutClient() {
           </div>
 
           <div className="form-card">
-            <h3>Shipping address</h3>
+            <h3>Customer details</h3>
             <div className="form-grid">
               <div className="field">
                 <label htmlFor="firstName">First name</label>
@@ -145,26 +141,6 @@ export default function CheckoutClient() {
                 <label htmlFor="phone">Phone</label>
                 <input id="phone" value={form.phone} onChange={handleInputChange} required placeholder="+62 812 3456 7890" />
               </div>
-              <div className="field">
-                <label htmlFor="address">Street address</label>
-                <input id="address" value={form.address} onChange={handleInputChange} placeholder="Jl. Sudirman No. 8" />
-              </div>
-              <div className="field">
-                <label htmlFor="city">City</label>
-                <input id="city" value={form.city} onChange={handleInputChange} placeholder="Jakarta" />
-              </div>
-              <div className="field">
-                <label htmlFor="country">Country</label>
-                <select id="country" value={form.country} onChange={handleInputChange}>
-                  <option>Indonesia</option>
-                  <option>Singapore</option>
-                  <option>Malaysia</option>
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="postal">Postal code</label>
-                <input id="postal" value={form.postal} onChange={handleInputChange} placeholder="12190" />
-              </div>
             </div>
           </div>
 
@@ -178,7 +154,7 @@ export default function CheckoutClient() {
           <h3>Order summary</h3>
           {isLoading ? (
             <div className="empty-state">
-              <strong>Loading cart<span className="loading-dots"></span></strong>
+              <strong>Loading cart...</strong>
               <span>Syncing items from the database.</span>
             </div>
           ) : lines.length ? (
@@ -200,10 +176,6 @@ export default function CheckoutClient() {
               <div className="summary-row">
                 <span>Subtotal</span>
                 <span>{formatPrice(totals.subtotal)}</span>
-              </div>
-              <div className="summary-row">
-                <span>Shipping</span>
-                <span>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</span>
               </div>
               <div className="summary-row summary-total">
                 <span>Total</span>

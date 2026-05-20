@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import AppShell from "@/components/AppShell";
 import ProductDetailActions from "@/components/ProductDetailActions";
 import ProductCard from "@/components/ProductCard";
-import LoadingImage from "@/components/LoadingImage";
 import Topbar from "@/components/Topbar";
 import { formatPrice } from "@/lib/format";
 import { fetchProductById, fetchRelatedProducts } from "@/lib/products.server";
@@ -51,9 +50,13 @@ export default async function ProductDetailPage({
       <section className="section fade-up">
         <div className="product-layout">
           <div className="product-gallery">
-            <LoadingImage
+            <Image
               src={product.image}
               alt={product.name}
+              width={640}
+              height={720}
+              priority
+              sizes="(max-width: 1100px) 100vw, 640px"
             />
           </div>
 

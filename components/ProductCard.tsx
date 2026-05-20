@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import LoadingImage from "./LoadingImage";
 import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/format";
 
@@ -34,7 +33,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   return (
     <Link href={`/product/${product.id}`} className="product-card">
       <div className="product-media">
-        <LoadingImage src={product.image} alt={product.name} />
+        <img
+          src={product.image}
+          alt={product.name}
+        />
       </div>
       <div className="product-info">
         <h3>{product.name}</h3>
