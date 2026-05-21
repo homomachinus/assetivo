@@ -18,9 +18,9 @@ function buildLines(items: CartItem[], catalog: Product[]): CartLine[] {
     const product = catalog.find((entry) => entry.id === item.productId);
     if (!product) continue;
     lines.push({
-      item,
+      item: { ...item, quantity: 1 }, // Force quantity to 1
       product,
-      lineTotal: product.price * item.quantity
+      lineTotal: product.price * 1
     });
   }
   return lines;
@@ -152,7 +152,7 @@ export default function CheckoutClient() {
                 <div key={line.product.id} className="summary-row">
                   <div className="summary-item">
                     <span className="summary-name">
-                      {line.product.name} x{line.item.quantity}
+                      {line.product.name}
                     </span>
                     <span className="summary-meta">
                       {line.product.line} / {line.product.category} / {line.product.variantType}

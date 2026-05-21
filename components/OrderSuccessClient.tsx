@@ -153,8 +153,8 @@ export default function OrderSuccessClient() {
               fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span>
-            <strong>Perhatian:</strong> Link di bawah hanya bisa diakses <strong>satu kali</strong>. 
-            Pastikan Anda sudah menyimpan/download file sebelum meninggalkan halaman ini.
+            <strong>Perhatian:</strong> Link di bawah hanya bisa diakses <strong>satu kali</strong>. -
+            Pastikan Anda sudah menyimpan/download file sebelum meninggalkan halaman ini. Link dibawah juga akan berbeda pada setiap kali order yang dilakukan.
           </span>
         </div>
 

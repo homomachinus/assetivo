@@ -98,6 +98,8 @@ async function syncPaymenkuStatus(orderId: string) {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_request: Request, { params }: RouteContext) {
   try {
     const orderId = params.order_id;

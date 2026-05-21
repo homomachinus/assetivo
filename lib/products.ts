@@ -15,6 +15,7 @@ export type Product = {
   image: string;
   was?: number;
   favourite?: boolean;
+  isReady?: boolean;
 };
 
 export type DbProductRow = {
@@ -32,12 +33,14 @@ export type DbProductRow = {
   category: { name: string } | null;
   variantType: { name: string } | null;
   variantColor: { name: string } | null;
+  assets?: { gdrive_link: string | null }[] | null;
 };
 
 export const PRODUCTS_SELECT =
   "id,title,description,price,currency,image_url,line_id,category_id,variant_type_id,variant_color_id," +
   "line:product_lines(name),category:product_categories(name)," +
-  "variantType:variant_types(name),variantColor:variant_colors(name)";
+  "variantType:variant_types(name),variantColor:variant_colors(name)," +
+  "assets:product_assets(gdrive_link)";
 
 const FALLBACK_IMAGE = "/assets/cover/image1.png";
 
@@ -46,6 +49,10 @@ export function mapDbProduct(row: DbProductRow): Product {
   const categoryName = row.category?.name ?? "";
   const typeName = row.variantType?.name ?? "";
   const colorName = row.variantColor?.name ?? "";
+  
+  const hasDriveLink = Array.isArray(row.assets) && row.assets.some(
+    (a) => a.gdrive_link && a.gdrive_link.trim() !== ""
+  );
 
   return {
     id: row.id,
@@ -62,7 +69,8 @@ export function mapDbProduct(row: DbProductRow): Product {
     price: row.price,
     currency: row.currency ?? "IDR",
     image: row.image_url ?? FALLBACK_IMAGE,
-    favourite: false
+    favourite: false,
+    isReady: hasDriveLink
   };
 }
 

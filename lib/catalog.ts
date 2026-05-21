@@ -36,9 +36,9 @@ export function getCartLines(): CartLine[] {
         return null;
       }
       return {
-        item,
+        item: { ...item, quantity: 1 },
         product,
-        lineTotal: product.price * item.quantity
+        lineTotal: product.price * 1
       };
     })
     .filter((line): line is CartLine => Boolean(line));
@@ -47,7 +47,7 @@ export function getCartLines(): CartLine[] {
 export function getCartTotals(lines: Array<{ lineTotal: number }>) {
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0);
   const shipping = subtotal > 0 ? 0 : 0;
-  const discount = subtotal > 900 ? 60 : 0;
+  const discount = 0; // Removed discount system
   const total = subtotal + shipping - discount;
 
   return { subtotal, shipping, discount, total };

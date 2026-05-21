@@ -97,23 +97,6 @@ export default function ExploreClient({ products }: ExploreClientProps) {
         searchValue={query}
         searchPlaceholder="Search products, categories…"
         onSearchChange={setQuery}
-        actions={
-          <div className="action-row">
-            <Link href="/cart" className="icon-btn" aria-label="Cart">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M3 4h2l2.5 12.5h10.5L20.5 8H6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinejoin="round"
-                />
-                <circle cx="10" cy="20" r="1.5" fill="currentColor" />
-                <circle cx="18" cy="20" r="1.5" fill="currentColor" />
-              </svg>
-            </Link>
-          </div>
-        }
       />
 
       <div className="explore-layout">

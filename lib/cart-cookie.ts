@@ -60,7 +60,8 @@ export function addToCartCookie(item: CartItem): CartItem[] {
   });
 
   if (existing) {
-    existing.quantity += item.quantity;
+    // Digital assets only need quantity 1. If it already exists, do not increment.
+    existing.quantity = 1;
   } else {
     items.push({
       ...item,

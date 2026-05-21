@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { requireString, successResponse, errorResponse, catchError } from "@/lib/api-helpers";
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/admin/payment-gateways
 export async function GET() {
   try {
