@@ -2605,4 +2605,148 @@ p {
   background: rgba(220, 38, 38, 0.15);
   color: #f87171;
 }
+
+/* ================================================================
+   Admin Dashboard Responsive Mobile Styles
+   ================================================================ */
+
+/* Toggle menu styles (hidden on desktop) */
+.admin-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 8px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-menu-toggle:hover {
+  background-color: var(--surface-muted);
+}
+
+.admin-sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 6px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-sidebar-close:hover {
+  background-color: var(--line);
+}
+
+.admin-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  transition: opacity 0.25s ease;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .admin-menu-toggle {
+    display: flex;
+  }
+
+  .admin-sidebar-close {
+    display: flex;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow);
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .admin-topbar {
+    padding: 0 16px;
+  }
+
+  .admin-content-inner {
+    padding: 16px;
+  }
+
+  /* Admin Header & Grid Responsive */
+  .admin-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .admin-header-actions > * {
+    width: 100%;
+  }
+
+  .admin-header-actions .btn {
+    width: 100%;
+  }
+
+  .admin-search-bar {
+    width: 100%;
+  }
+
+  /* Responsive cards and grid pages */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .pg-card {
+    padding: 16px;
+  }
+
+  .account-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-topbar-title h2 {
+    font-size: 16px;
+  }
+
+  .admin-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Form spacing inside admin modals / cards */
+  .admin-modal {
+    max-height: 95vh;
+  }
+  
+  .admin-modal-header,
+  .admin-modal-body,
+  .admin-modal-footer {
+    padding: 16px;
+  }
+
+  /* Ensure Table behaves gracefully in overflow on smaller viewports */
+  .admin-table th,
+  .admin-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+}
 

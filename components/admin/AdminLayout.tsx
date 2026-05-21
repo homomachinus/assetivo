@@ -31,6 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [admin, setAdmin] = useState<AdminProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/me")
@@ -52,6 +53,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       });
   }, [router]);
 
+  // Auto close sidebar when route changes on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   const handleLogout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
     router.replace("/admin");
@@ -69,12 +75,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="admin-dashboard-app">
+      {/* Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="admin-sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="admin-sidebar-header">
-          <div className="brand">
+          <div className="brand" style={{ flex: 1, marginBottom: 0 }}>
             <span>Assetivo</span>
           </div>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="admin-sidebar-close"
+            aria-label="Close menu"
+          >
+            <span className="material-symbols-outlined">close</span>
+          </button>
         </div>
 
         <nav className="admin-sidebar-nav">
@@ -116,8 +137,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Area */}
       <main className="admin-main-content">
         <header className="admin-topbar">
-          <div className="admin-topbar-title">
-            <h2>{MENU_ITEMS.find((m) => pathname === m.href || (m.href !== "/admin/dashboard" && pathname.startsWith(m.href)))?.label || "Dashboard"}</h2>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="admin-menu-toggle"
+              aria-label="Toggle menu"
+            >
+              <span className="material-symbols-outlined">menu</span>
+            </button>
+            <div className="admin-topbar-title">
+              <h2>{MENU_ITEMS.find((m) => pathname === m.href || (m.href !== "/admin/dashboard" && pathname.startsWith(m.href)))?.label || "Dashboard"}</h2>
+            </div>
           </div>
           <div className="admin-topbar-actions">
             <Link href="/admin/dashboard/settings" className="admin-icon-btn">
