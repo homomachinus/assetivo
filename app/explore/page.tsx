@@ -1,12 +1,24 @@
+import type { Metadata } from "next";
 import AppShell from "@/components/AppShell";
 import ExploreClient from "@/components/ExploreClient";
 import { fetchProducts } from "@/lib/products.server";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Explore – Assetivo",
-  description: "Browse and filter all products by product line, category, and color.",
+export const metadata: Metadata = {
+  title: "Explore Products — Jelajahi Semua Produk",
+  description:
+    "Jelajahi seluruh koleksi digital assets di Assetivo. Filter berdasarkan product line, kategori, dan warna untuk menemukan produk yang Anda cari.",
+  alternates: {
+    canonical: "https://assetivo.store/explore",
+  },
+  openGraph: {
+    title: "Explore Products — Assetivo Digital Assets",
+    description:
+      "Jelajahi koleksi lengkap digital assets. Filter berdasarkan product line, kategori, dan warna.",
+    url: "https://assetivo.store/explore",
+    type: "website",
+  },
 };
 
 export default async function ExplorePage() {

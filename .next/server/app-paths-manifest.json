@@ -1,19 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
   "/admin/page": "app/admin/page.js",
-  "/api/admin/login/route": "app/api/admin/login/route.js",
-  "/api/admin/me/route": "app/api/admin/me/route.js",
-  "/api/catalog/categories/route": "app/api/catalog/categories/route.js",
-  "/api/catalog/lines/route": "app/api/catalog/lines/route.js",
-  "/api/admin-users/route": "app/api/admin-users/route.js",
-  "/api/admin/payment-gateways/route": "app/api/admin/payment-gateways/route.js",
-  "/api/catalog/assets/route": "app/api/catalog/assets/route.js",
-  "/api/catalog/products/route": "app/api/catalog/products/route.js",
-  "/api/payment-history/route": "app/api/payment-history/route.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/dashboard/categories/page": "app/admin/dashboard/categories/page.js",
-  "/admin/dashboard/users/page": "app/admin/dashboard/users/page.js",
-  "/admin/dashboard/assets/page": "app/admin/dashboard/assets/page.js",
-  "/admin/dashboard/payment/page": "app/admin/dashboard/payment/page.js",
-  "/admin/dashboard/orders/page": "app/admin/dashboard/orders/page.js"
+  "/sitemap.xml/[[...__metadata_id__]]/route": "app/sitemap.xml/[[...__metadata_id__]]/route.js"
 }

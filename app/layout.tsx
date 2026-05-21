@@ -16,9 +16,70 @@ const playfair = Playfair_Display({
   variable: "--font-display"
 });
 
+const BASE_URL = "https://assetivo.store";
+
 export const metadata: Metadata = {
-  title: "Assetivo - Fashion Store",
-  description: "Responsive front-end prototype for the purchase flow."
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Assetivo — Digital Assets Store",
+    template: "%s | Assetivo",
+  },
+  description:
+    "Assetivo adalah toko digital assets premium. Temukan koleksi lengkap produk digital berkualitas tinggi dengan harga terjangkau.",
+  keywords: [
+    "digital assets",
+    "assetivo",
+    "produk digital",
+    "toko digital",
+    "aset digital",
+    "template digital",
+  ],
+  authors: [{ name: "Assetivo", url: BASE_URL }],
+  creator: "Assetivo",
+  publisher: "Assetivo",
+  alternates: {
+    canonical: BASE_URL,
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: BASE_URL,
+    siteName: "Assetivo",
+    title: "Assetivo — Digital Assets Store",
+    description:
+      "Assetivo adalah toko digital assets premium. Temukan koleksi lengkap produk digital berkualitas tinggi.",
+    images: [
+      {
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Assetivo — Digital Assets Store",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Assetivo — Digital Assets Store",
+    description:
+      "Toko digital assets premium. Produk digital berkualitas tinggi dengan harga terjangkau.",
+    images: [`${BASE_URL}/og-image.png`],
+    creator: "@assetivo",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
