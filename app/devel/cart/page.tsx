@@ -1,7 +1,6 @@
 import AppShell from "@/components/AppShell";
 import CartClient from "@/components/CartClient";
 import Topbar from "@/components/Topbar";
-import Link from "next/link";
 
 export default function DevelCartPage() {
   return (
@@ -9,13 +8,6 @@ export default function DevelCartPage() {
       <Topbar
         title="Your cart"
         subtitle="Almost there"
-        actions={
-          <div className="action-row">
-            <Link href="/devel/account" className="avatar" aria-label="Account">
-              EA
-            </Link>
-          </div>
-        }
       />
 
       <CartClient />

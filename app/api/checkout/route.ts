@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const productIds = items.map((item: any) => item.productId);
     const { data: dbProducts, error: dbError } = await supabase
       .from("products")
-      .select("id, title, price, currency")
+      .select("id, title, price, currency, assets:product_assets(gdrive_link)")
       .in("id", productIds);
 
     if (dbError || !dbProducts) {
@@ -50,6 +50,15 @@ export async function POST(request: Request) {
       const product = dbProducts.find((p) => p.id === item.productId);
       if (!product) {
         return errorResponse(`Product not found: ${item.productId}`, 404);
+      }
+
+      // Check if product has a valid gdrive link
+      const productAssets = (product as any).assets || [];
+      const hasDriveLink = productAssets.some(
+        (a: any) => a.gdrive_link && a.gdrive_link.trim() !== ""
+      );
+      if (!hasDriveLink) {
+        return errorResponse(`Produk belum ready: ${product.title}`, 400);
       }
 
       const qty = 1; // Force quantity to 1 for digital products
