@@ -748,7 +748,7 @@ p {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 22px;
-  align-items: center;
+  align-items: start;
 }
 
 .product-gallery {
@@ -782,8 +782,7 @@ p {
   gap: 25px;
   height: fit-content;
   position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 24px;
 }
 
 

@@ -26,7 +26,7 @@ export async function generateMetadata({
   const title = `${product.name} | Assetivo`;
   const description = product.description
     ? product.description.slice(0, 160)
-    : `Beli ${product.name} — ${product.line} › ${product.category} di Assetivo Digital Assets Store.`;
+    : `Beli ${product.name} — ${product.line} › ${product.category} di Assetivo Digital Assets Store & Management.`;
   const productUrl = `${BASE_URL}/product/${product.id}`;
   const imageUrl = product.image.startsWith("http")
     ? product.image
@@ -35,6 +35,15 @@ export async function generateMetadata({
   return {
     title,
     description,
+    keywords: [
+      product.name,
+      product.line,
+      product.category,
+      product.variantType,
+      product.variantColor,
+      "digital assets",
+      "assetivo",
+    ].filter(Boolean),
     alternates: { canonical: productUrl },
     openGraph: {
       title,
@@ -65,11 +74,75 @@ export default async function ProductDetailPage({
 
   const related = await fetchRelatedProducts(product, 4);
 
+  const productUrl = `${BASE_URL}/product/${product.id}`;
+  const imageUrl = product.image.startsWith("http")
+    ? product.image
+    : `${BASE_URL}${product.image}`;
+
+  // JSON-LD structured data for Google rich results
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || `${product.name} — ${product.line} › ${product.category}`,
+    image: imageUrl,
+    url: productUrl,
+    sku: product.id,
+    category: `${product.line} > ${product.category}`,
+    brand: {
+      "@type": "Brand",
+      name: "Assetivo",
+    },
+    offers: {
+      "@type": "Offer",
+      url: productUrl,
+      priceCurrency: product.currency || "IDR",
+      price: product.price,
+      priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
+      availability: product.isReady
+        ? "https://schema.org/InStock"
+        : "https://schema.org/PreOrder",
+      seller: {
+        "@type": "Organization",
+        name: "Assetivo",
+        url: BASE_URL,
+      },
+    },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Product Line",
+        value: product.line,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Category",
+        value: product.category,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Variant Type",
+        value: product.variantType,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Color",
+        value: product.variantColor,
+      },
+    ].filter((p) => p.value && p.value !== "-"),
+  };
+
   return (
     <AppShell>
-      <Topbar
-        title=""
+      {/* JSON-LD Structured Data — makes product name, price & availability appear in Google rich results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      <Topbar title="" />
 
       <section className="section fade-up">
         <div className="product-layout">
@@ -117,4 +190,4 @@ export default async function ProductDetailPage({
       </section>
     </AppShell>
   );
-}
+}
