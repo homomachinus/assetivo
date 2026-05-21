@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,6 +10,47 @@ import { formatPrice } from "@/lib/format";
 import { fetchProductById, fetchRelatedProducts } from "@/lib/products.server";
 
 export const dynamic = "force-dynamic";
+
+const BASE_URL = "https://assetivo.store";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const product = await fetchProductById(params.id);
+  if (!product) {
+    return { title: "Produk tidak ditemukan" };
+  }
+
+  const title = `${product.name} | Assetivo`;
+  const description = product.description
+    ? product.description.slice(0, 160)
+    : `Beli ${product.name} — ${product.line} › ${product.category} di Assetivo Digital Assets Store.`;
+  const productUrl = `${BASE_URL}/product/${product.id}`;
+  const imageUrl = product.image.startsWith("http")
+    ? product.image
+    : `${BASE_URL}${product.image}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: productUrl },
+    openGraph: {
+      title,
+      description,
+      url: productUrl,
+      type: "website",
+      images: [{ url: imageUrl, width: 640, height: 720, alt: product.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function ProductDetailPage({
   params,
