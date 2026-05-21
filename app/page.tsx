@@ -10,16 +10,16 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Assetivo — Digital Assets Store",
+  title: "Assetivo — Digital Assets Store & Management",
   description:
-    "Temukan koleksi digital assets premium di Assetivo. Produk digital berkualitas tinggi tersedia dengan harga terjangkau untuk kebutuhan kreatif Anda.",
+    "Temukan dan kelola digital assets premium di Assetivo. Produk digital berkualitas tinggi tersedia untuk kebutuhan kreatif dan bisnis Anda.",
   alternates: {
     canonical: "https://assetivo.store",
   },
   openGraph: {
-    title: "Assetivo — Digital Assets Store",
+    title: "Assetivo — Digital Assets Store & Management",
     description:
-      "Temukan koleksi digital assets premium. Produk digital berkualitas tinggi dengan harga terjangkau.",
+      "Platform digital assets store dan management premium. Temukan produk digital berkualitas tinggi.",
     url: "https://assetivo.store",
     type: "website",
   },

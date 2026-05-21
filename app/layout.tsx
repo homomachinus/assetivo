@@ -21,11 +21,11 @@ const BASE_URL = "https://assetivo.store";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Assetivo — Digital Assets Store",
+    default: "Assetivo — Digital Assets Store & Management",
     template: "%s | Assetivo",
   },
   description:
-    "Assetivo adalah toko digital assets premium. Temukan koleksi lengkap produk digital berkualitas tinggi dengan harga terjangkau.",
+    "Assetivo adalah platform digital assets store dan management premium. Temukan, kelola, dan beli produk digital berkualitas tinggi dengan mudah.",
   keywords: [
     "digital assets",
     "assetivo",
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     locale: "id_ID",
     url: BASE_URL,
     siteName: "Assetivo",
-    title: "Assetivo — Digital Assets Store",
+    title: "Assetivo — Digital Assets Store & Management",
     description:
-      "Assetivo adalah toko digital assets premium. Temukan koleksi lengkap produk digital berkualitas tinggi.",
+      "Platform digital assets store dan management premium. Temukan, kelola, dan beli produk digital berkualitas tinggi.",
     images: [
       {
         url: `${BASE_URL}/og-image.png`,
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Assetivo — Digital Assets Store",
+    title: "Assetivo — Digital Assets Store & Management",
     description:
-      "Toko digital assets premium. Produk digital berkualitas tinggi dengan harga terjangkau.",
+      "Platform digital assets store dan management premium. Produk digital berkualitas tinggi dengan harga terjangkau.",
     images: [`${BASE_URL}/og-image.png`],
     creator: "@assetivo",
   },
