@@ -36,7 +36,7 @@ export default function ProductDetailActions({
       <button
         type="button"
         className="btn btn-primary"
-        onClick={() => handleAdd("/checkout")}
+        onClick={() => handleAdd("/cart")}
       >
         Buy now
       </button>

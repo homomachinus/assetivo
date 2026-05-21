@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         return errorResponse(`Product not found: ${item.productId}`, 404);
       }
 
-      const qty = parseInt(item.quantity) || 1;
+      const qty = 1; // Force quantity to 1 for digital products
       const price = product.price;
       const lineTotal = price * qty;
       grossAmount += lineTotal;

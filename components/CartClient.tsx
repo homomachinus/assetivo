@@ -20,9 +20,9 @@ function buildLines(items: CartItem[], catalog: Product[]): CartLine[] {
     const product = catalog.find((entry) => entry.id === item.productId);
     if (!product) continue;
     lines.push({
-      item,
+      item: { ...item, quantity: 1 },
       product,
-      lineTotal: product.price * item.quantity
+      lineTotal: product.price * 1
     });
   }
   return lines;
@@ -47,7 +47,6 @@ export default function CartClient() {
           setCatalog(payload.data as Product[]);
         }
       } catch {
-        // Ignore fetch errors for now.
       }
     }
 
@@ -102,7 +101,6 @@ export default function CartClient() {
                   <strong>{formatPrice(line.lineTotal)}</strong>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "8px" }}>
-                  <div className="qty-chip">Qty {line.item.quantity}</div>
                   <button
                     onClick={() => removeItem(line.product.id)}
                     style={{
@@ -131,10 +129,6 @@ export default function CartClient() {
             <div className="summary-row">
               <span>Shipping</span>
               <span>{totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Discount</span>
-              <span>{formatPrice(totals.discount)}</span>
             </div>
             <div className="summary-row summary-total">
               <span>Total</span>
