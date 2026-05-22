@@ -3,7 +3,7 @@ import AppShell from "@/components/AppShell";
 import ExploreClient from "@/components/ExploreClient";
 import { fetchProducts } from "@/lib/products.server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Explore Products — Jelajahi Semua Produk",

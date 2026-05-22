@@ -91,11 +91,9 @@ const fetchRelatedProductsCached = unstable_cache(
   { revalidate: 60 }
 );
 
-export async function fetchProducts(): Promise<Product[]> {
-  noStore();
-  const startedAt = Date.now();
-  const supabase = getSupabaseServer();
-  try {
+const fetchProductsCached = unstable_cache(
+  async () => {
+    const supabase = getSupabaseServer();
     const { data, error } = await supabase
       .from("products")
       .select(PRODUCTS_SELECT)
@@ -118,16 +116,23 @@ export async function fetchProducts(): Promise<Product[]> {
     }
 
     return mapDbProducts(data as unknown as DbProductRow[]);
+  },
+  ["products-list"],
+  { revalidate: 60 }
+);
+
+export async function fetchProducts(): Promise<Product[]> {
+  const startedAt = Date.now();
+  try {
+    return await fetchProductsCached();
   } finally {
     logTiming("fetchProducts", startedAt);
   }
 }
 
-export async function fetchHomeCollectionProduct(): Promise<Product | null> {
-  noStore();
-  const startedAt = Date.now();
-  const supabase = getSupabaseServer();
-  try {
+const fetchHomeCollectionProductCached = unstable_cache(
+  async () => {
+    const supabase = getSupabaseServer();
     const { data, error } = await supabase
       .from("home_collections")
       .select("product_id")
@@ -150,7 +155,17 @@ export async function fetchHomeCollectionProduct(): Promise<Product | null> {
       return null;
     }
 
-    return mapDbProduct(productRow as unknown as DbProductRow);  } finally {
+    return mapDbProduct(productRow as unknown as DbProductRow);
+  },
+  ["home-collection-product"],
+  { revalidate: 60 }
+);
+
+export async function fetchHomeCollectionProduct(): Promise<Product | null> {
+  const startedAt = Date.now();
+  try {
+    return await fetchHomeCollectionProductCached();
+  } finally {
     logTiming("fetchHomeCollectionProduct", startedAt);
   }
 }
