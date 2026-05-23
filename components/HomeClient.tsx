@@ -112,11 +112,8 @@ export default function HomeClient({ products, heroProduct, lineItems }: HomeCli
               the season.
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href={`/product/${spotlightProduct.id}`}>
-                Shop now
-              </Link>
-              <Link className="btn" href="/checkout">
-                Fast checkout
+              <Link className="btn btn-primary" href="/explore">
+                Browse All Templates
               </Link>
             </div>
           </div>

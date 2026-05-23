@@ -511,7 +511,7 @@ p {
 .category-row-wrap {
   overflow-x: auto;
   overflow-y: visible;
-  padding: 16px 8px 36px;
+  padding: 24px 8px 32px;
 }
 
 .category-row-wrap::-webkit-scrollbar {
@@ -520,48 +520,69 @@ p {
 
 .category-row {
   display: flex;
-  gap: 12px;
+  gap: 16px;
 }
 
 .category-pill {
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 12px 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 72px;
+  gap: 14px;
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  outline: none;
+}
+
+.category-pill:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
 }
 
 .category-pill.active {
+  background: var(--gold);
   border-color: var(--gold-dark);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(245, 197, 24, 0.35);
 }
 
 .category-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background: var(--gold-light);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.category-pill.active .category-icon {
+  background: var(--surface);
+  transform: scale(1.05);
 }
 
 .category-letter {
   font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
   color: var(--ink);
 }
 
 .category-name {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: color 0.25s ease;
+}
+
+.category-pill.active .category-name {
+  color: var(--btn-bg-text);
 }
 
 .product-grid {
