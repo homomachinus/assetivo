@@ -24,6 +24,7 @@ const MENU_ITEMS = [
   { label: "Product Assets", href: "/admin/dashboard/assets", icon: "folder_open" },
   { label: "Admin Users", href: "/admin/dashboard/users", icon: "group" },
   { label: "Orders", href: "/admin/dashboard/orders", icon: "shopping_cart" },
+  { label: "Analytics", href: "/admin/dashboard/analytics", icon: "bar_chart" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
