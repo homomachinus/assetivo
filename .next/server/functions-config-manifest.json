@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/admin":{},"/api/admin/payment-gateways":{},"/api/order/[order_id]":{},"/devel/product/[id]":{},"/explore":{},"/admin/dashboard":{},"/devel":{},"/devel/favourites":{},"/":{},"/product/[id]":{}}}
+{"version":1,"functions":{"/api/order/[order_id]":{},"/admin":{},"/devel/favourites":{},"/devel/product/[id]":{},"/explore":{},"/":{},"/product/[id]":{},"/api/admin/payment-gateways":{},"/admin/dashboard":{},"/devel":{}}}

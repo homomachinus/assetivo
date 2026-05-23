@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { Product } from "@/lib/products";
 import { addToCartCookie } from "@/lib/cart-cookie";
@@ -12,8 +13,18 @@ export default function ProductDetailActions({
   product
 }: ProductDetailActionsProps) {
   const router = useRouter();
+  const [showToast, setShowToast] = useState(false);
 
-  const handleAdd = (nextPath: string) => {
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
+  const handleAdd = (nextPath?: string) => {
     if (product.isReady === false) return;
     addToCartCookie({
       productId: product.id,
@@ -22,7 +33,11 @@ export default function ProductDetailActions({
       variantColor: product.variantColor
     });
 
-    router.push(nextPath);
+    if (nextPath) {
+      router.push(nextPath);
+    } else {
+      setShowToast(true);
+    }
   };
 
   const isNotReady = product.isReady === false;
@@ -33,7 +48,7 @@ export default function ProductDetailActions({
         <button
           type="button"
           className="btn btn-secondary"
-          onClick={() => handleAdd("/cart")}
+          onClick={() => handleAdd()}
           disabled={isNotReady}
         >
           Add to cart
@@ -66,6 +81,40 @@ export default function ProductDetailActions({
           <span>Produk belum ready. Belum bisa ditambahkan ke keranjang atau checkout.</span>
         </div>
       )}
+
+      {/* Premium Toast Notification */}
+      <div className={`toast-notification${showToast ? " show" : ""}`} role="alert" aria-live="assertive">
+        <div className="toast-icon">
+          <span className="material-symbols-outlined">check_circle</span>
+        </div>
+        <div className="toast-content">
+          <p className="toast-title">Added to Cart</p>
+          <p className="toast-message">
+            <strong>{product.name}</strong> has been successfully added to your cart.
+          </p>
+          <div className="toast-actions">
+            <a href="/cart" className="toast-btn-link">View Cart</a>
+            <span style={{ color: "var(--line)", fontSize: "10px" }}>•</span>
+            <button 
+              type="button" 
+              onClick={() => setShowToast(false)} 
+              className="toast-btn-link" 
+              style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+            >
+              Continue shopping
+            </button>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          onClick={() => setShowToast(false)} 
+          className="toast-close" 
+          aria-label="Close notification"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>close</span>
+        </button>
+      </div>
     </div>
   );
 }
+
