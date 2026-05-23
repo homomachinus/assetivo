@@ -9,7 +9,7 @@ import Topbar from "@/components/Topbar";
 import { formatPrice } from "@/lib/format";
 import { fetchProductById, fetchRelatedProducts } from "@/lib/products.server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const BASE_URL = "https://assetivo.store";
 

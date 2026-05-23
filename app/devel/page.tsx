@@ -6,7 +6,7 @@ import {
   fetchProducts
 } from "@/lib/products.server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function DevelHomePage() {
   const [products, heroProduct, lineRows] = await Promise.all([

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "@/app/globals.css";
 
 const dmSans = DM_Sans({
@@ -95,6 +96,20 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-QGJK0KQZXH"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QGJK0KQZXH');
+          `}
+        </Script>
       </body>
     </html>
   );

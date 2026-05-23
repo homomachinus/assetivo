@@ -7,7 +7,7 @@ import {
   fetchProducts
 } from "@/lib/products.server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Assetivo — Digital Assets Store & Management",
