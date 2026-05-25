@@ -16,6 +16,7 @@ type AdminDataTableProps<T> = {
   formFields: FormField[];
   entityName: string;
   primaryKey?: keyof T;
+  exportAction?: (data: T[]) => React.ReactNode;
 };
 
 export default function AdminDataTable<T extends Record<string, any>>({
@@ -25,6 +26,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
   formFields,
   entityName,
   primaryKey = "id" as keyof T,
+  exportAction,
 }: AdminDataTableProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -146,10 +148,13 @@ export default function AdminDataTable<T extends Record<string, any>>({
             Manage your store&apos;s {entityName}s here.
           </p>
         </div>
-        <button className="btn btn-primary" onClick={handleOpenCreate}>
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span>
-          Add {entityName}
-        </button>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          {exportAction && exportAction(filteredData)}
+          <button className="btn btn-primary" onClick={handleOpenCreate}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span>
+            Add {entityName}
+          </button>
+        </div>
       </div>
 
       {/* Search */}

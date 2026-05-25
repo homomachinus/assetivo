@@ -16,6 +16,43 @@ type Order = {
   metadata?: any;
 };
 
+function exportToCsv(data: Order[]) {
+  const headers = ["Order ID", "Customer Name", "Customer Phone", "Customer Email", "Products", "Amount", "Method", "Status", "Date"];
+  
+  const rows = data.map(order => {
+    const name = order.metadata?.customer?.name || "—";
+    const phone = order.metadata?.customer?.phone || "—";
+    const email = order.metadata?.customer?.email || order.user_email || "—";
+    
+    let products = "—";
+    if (order.items && Array.isArray(order.items)) {
+      products = order.items.map((p: any) => `${p.title} (x${p.quantity})`).join(" | ");
+    }
+    
+    return [
+      order.order_id,
+      name,
+      phone,
+      email,
+      products,
+      order.amount,
+      order.payment_method || "—",
+      order.status,
+      new Date(order.created_at).toLocaleDateString()
+    ].map(field => `"${String(field).replace(/"/g, '""')}"`).join(",");
+  });
+  
+  const csvContent = [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `orders_export_${new Date().toISOString().split("T")[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 export default function AdminOrdersPage() {
   const columns: ColumnDef<Order>[] = [
     { key: "order_id", label: "Order ID" },
@@ -104,6 +141,16 @@ export default function AdminOrdersPage() {
       endpoint="/api/payment-history"
       columns={columns}
       formFields={formFields}
+      exportAction={(data) => (
+        <button 
+          className="btn btn-outline" 
+          onClick={() => exportToCsv(data as Order[])}
+          style={{ display: "flex", alignItems: "center", gap: 6 }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>download</span>
+          Export CSV
+        </button>
+      )}
     />
   );
 }

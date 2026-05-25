@@ -71,3 +71,6 @@ docker-compose.override.yml
 *.bak
 *.tmp
 *.temp
+
+
+.next
